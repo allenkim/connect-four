@@ -1,1 +1,2 @@
-# connect-four
+# Connect Four
+AI Project for the Connect Four board game 
