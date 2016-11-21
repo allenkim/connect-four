@@ -3,6 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title> Connect Four </title>
+		<style>
+			input { width: 100px; }
+		</style>
 		<script src=connectFour.js defer></script>
 	</head>
 	<body>
@@ -18,13 +21,12 @@
 				<rect width="100%" height="100%" stroke="#000000" fill="url(#grid)" />
 			</svg>
 		</div>
-		<input type="button" value="Clear Grid" onclick="resetGrid();" />
+		<div id="drop_buttons">
+		</div>
 		<script>
 			var height = document.getElementById('grid_div').offsetHeight;
 			var width = document.getElementById('grid_div').offsetWidth;
 			var svg = document.getElementById('grid');
-      var color = ['red','yellow'];
-      var colorIdx = 0;
 			for (var row = 0; row < height; row += 100){
 				for (var col = 0; col < width; col += 100){
 					var cell = document.createElementNS("http://www.w3.org/2000/svg",'circle');
@@ -32,18 +34,17 @@
 					cell.setAttribute('cx',col+50);
 					cell.setAttribute('cy',row+50);
 					cell.setAttribute('r',50);
-          cell.setAttribute('fill',color[colorIdx]);
-          colorIdx = 1 - colorIdx;
-					cell.setAttribute('fill-opacity',0);
-					cell.onclick = function(e){
-						var opacity = e.target.getAttribute('fill-opacity');
-						e.target.setAttribute('fill-opacity',1-opacity);
-						var rectID = e.toElement.id;
-						var point = rectID.split('-');
-						grid[point[0]][point[1]] = 1-opacity;
-					};
+          cell.setAttribute('fill','white');
 					svg.appendChild(cell);
 				}
+			}
+			var button_div = document.getElementById('drop_buttons');
+			for (var col = 0; col < width/100; col++){
+				var button = document.createElement('input');
+				button.setAttribute('type','button');
+				button.setAttribute('value','Drop Col ' + col);
+				button.setAttribute('onclick','makeMove(' + col + ')');
+				button_div.appendChild(button);
 			}
 		</script>
 	</body>
