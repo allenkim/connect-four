@@ -34,14 +34,14 @@ document.getElementById('h_v_h').onclick = function() {
     botTurn = 0;
   }
 };
-document.getElementById('h_v_b').onclick = function() {
+document.getElementById('b_v_h').onclick = function() {
   if (botTurn !== 1){
     botTurn = 1;
     if (playerTurn == 1)
       makeBotMove();
   }
 };
-document.getElementById('b_v_h').onclick = function() {
+document.getElementById('h_v_b').onclick = function() {
   if (botTurn !== 2){
     botTurn = 2;
     if (playerTurn == 2)
