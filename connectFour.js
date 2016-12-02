@@ -59,9 +59,9 @@ document.getElementById('b_v_b').onclick = function() {
  * Computes the column the bot will make its next move in
  */
 function computeBotMove(){
-  for (var col = 0; col < width; col++){
-    var row = moveRow(col);
-    if (row !== -1)
+  while (!gameOver){
+    var col = Math.floor(Math.random() * 7);
+    if (moveRow(col,true))
       return col;
   }
 }
