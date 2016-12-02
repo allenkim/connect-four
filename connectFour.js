@@ -31,8 +31,99 @@ var gameOver = false;
  */
 function playerWon(row,col){
   // TODO: Return true if this row,col is a winning move, otherwise false
+  // Win condition : 4 in row, 4 in a col, 4 in a diagonal
+  // row = 3, col = 4
 
-  return Math.random() < 0.5;
+  var currentColor = grid[row][col];
+  var count = 0;
+
+  // Iterate through the columns
+  for (var x = 0; x < width; x++) {
+      if (grid[row][x] !== currentColor) {
+          // Reset the count and continue the loop, there may be more
+          count = 0;
+      }
+      else {
+          // Increment the count
+          count++;
+          if (count >= 4) {
+              return true;
+          }
+      }
+  }
+  // Reset
+  count = 0;
+
+  // Iterate through the rows
+  for (var y = 0; y < height; y++) {
+      if (grid[y][col] !== currentColor) {
+          // Reset the count
+          count = 0;
+      }
+      else {
+          count ++;
+          if (count >= 4) {
+              return true;
+          }
+      }
+  }
+  count = 0;
+
+  // Get the top left corner
+  var topLeftRow = row - Math.min(row, col);
+  var topLeftCol = col - Math.min(row, col);
+
+  var i = 0;
+  // Check if the topLeftRow is accessible in JS
+  while (grid[topLeftRow + i] !== undefined) {
+      // Otherwise we break out of the loop
+      if (grid[topLeftRow + i][topLeftCol + i] === undefined)
+          break;
+      else if (grid[topLeftRow + i][topLeftCol + i] !== currentColor) {
+          // Reset the counter
+          count = 0;
+      }
+      else {
+          count++;
+          if (count >= 4) {
+              return true;
+          }
+      }
+      i++;
+  }
+
+  // Reset the count
+  count = 0;
+  // Case 1: If the sum of the row, col <= 6 achieve the row to be 0
+  var topRightRow, topRightCol;
+  if (row + col <= 6) {
+      topRightRow = 0;
+      topRightCol = col + row;
+  }
+  // Otherwise acheive the column to be equal to 6
+  else {
+      var difference = width - col; // The difference we need for the top right corner is the width - col
+      topRightRow = row - difference;
+      topRightCol = col + difference;
+  }
+
+  // Reset the index counter
+  i = 0;
+  while(grid[topRightRow + i] !== undefined) {
+      if (grid[topRightRow + i][topRightCol - i] === undefined)
+          break;
+      else if (grid[topRightRow + i][topRightCol - i] !== currentColor)
+          count = 0;
+      else {
+          count++;
+          if (count >= 4){
+              return true;
+          }
+      }
+      i++;
+  }
+  // By default return false, the game still continues
+  return false;
 }
 
 /*
