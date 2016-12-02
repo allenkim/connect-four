@@ -45,22 +45,27 @@
 			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
 		</div>
 		<script>
+			var boxSize = 100;
 			var height = document.getElementById('grid_div').offsetHeight;
 			var width = document.getElementById('grid_div').offsetWidth;
 			var svg = document.getElementById('grid');
-			for (var row = 0; row < height; row += 100){
-				for (var col = 0; col < width; col += 100){
+			
+			// Initialize the grid on the browser with circles that are white initally
+			for (var row = 0; row < height; row += boxSize){
+				for (var col = 0; col < width; col += boxSize){
 					var cell = document.createElementNS("http://www.w3.org/2000/svg",'circle');
-					cell.setAttribute('id',row/100+'-'+col/100);
-					cell.setAttribute('cx',col+50);
-					cell.setAttribute('cy',row+50);
-					cell.setAttribute('r',50);
+					cell.setAttribute('id',row/boxSize+'-'+col/boxSize);
+					cell.setAttribute('cx',col+(boxSize/2));
+					cell.setAttribute('cy',row+(boxSize/2));
+					cell.setAttribute('r',boxSize/2);
           cell.setAttribute('fill','white');
 					svg.appendChild(cell);
 				}
 			}
+
+			// Intialize the buttons below the columns for the dropping
 			var button_div = document.getElementById('drop_buttons');
-			for (var col = 0; col < width/100; col++){
+			for (var col = 0; col < width/boxSize; col++){
 				var button = document.createElement('input');
 				button.setAttribute('type','button');
 				button.setAttribute('value','Drop Col ' + col);
