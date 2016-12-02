@@ -10,20 +10,20 @@
 		<h1 class="center"> Connect Four </h1>
 		<div class="center">
         <div class="tab">
-            <input type="radio" id="tab-1" name="game_type" checked>
-            <label for="tab-1">Human vs Human</label>
+            <input type="radio" id="h_v_h" name="game_type" checked>
+            <label for="h_v_h">Human vs Human</label>
         </div>
         <div class="tab">
-            <input type="radio" id="tab-2" name="game_type">
-            <label for="tab-2">Human vs Bot</label>
+            <input type="radio" id="h_v_b" name="game_type">
+            <label for="h_v_b">Human vs Bot</label>
         </div>
         <div class="tab">
-            <input type="radio" id="tab-3" name="game_type">
-            <label for="tab-3">Bot vs Human</label>
+            <input type="radio" id="b_v_h" name="game_type">
+            <label for="b_v_h">Bot vs Human</label>
         </div>
 				<div class="tab">
-            <input type="radio" id="tab-4" name="game_type">
-            <label for="tab-4">Bot vs Bot</label>
+            <input type="radio" id="b_v_b" name="game_type">
+            <label for="b_v_b">Bot vs Bot</label>
         </div>
     </div>
 		<h3 class="center" id="player_turn"> Player 1's Move </h3>
@@ -49,7 +49,7 @@
 			var height = document.getElementById('grid_div').offsetHeight;
 			var width = document.getElementById('grid_div').offsetWidth;
 			var svg = document.getElementById('grid');
-			
+
 			// Initialize the grid on the browser with circles that are white initally
 			for (var row = 0; row < height; row += boxSize){
 				for (var col = 0; col < width; col += boxSize){
