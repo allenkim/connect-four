@@ -1,0 +1,35 @@
+h1 {
+  font-size: 250%;
+}
+
+h3 {
+  font-size: 200%;
+}
+
+input {
+  width: 100px;
+}
+
+.center {
+  text-align: center;
+}
+
+.tab {
+  display: inline-block;
+}
+
+.tab label {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+[type=radio]:checked ~ label {
+    background: white;
+    border-bottom: 4px solid gray;
+}
+
+#grid_div {
+  margin: auto;
+  width:700px;
+  height:600px;
+}

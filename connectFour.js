@@ -30,7 +30,7 @@ function makeMove(col){
       }
       else{
         playerTurn = 3 - playerTurn;
-        document.getElementById('player_turn').innerHTML = "Player's " + playerTurn + " Move";
+        document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
       }
       drawGrid();
       return true;
@@ -57,7 +57,7 @@ function drawGrid(){
 function resetGrid(){
   document.getElementById('game_end').style.display = 'none';
   playerTurn = 1;
-  document.getElementById('player_turn').innerHTML = "Player's " + playerTurn + " Move";
+  document.getElementById('player_turn').innerHTML = "Player 1's Move";
   gameOver = false;
   for (var row = 0; row < height; row++){
     for (var col = 0; col < width; col++){

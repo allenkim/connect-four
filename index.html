@@ -7,8 +7,8 @@
 		<script src=connectFour.js defer></script>
 	</head>
 	<body>
-		<h1> Connect Four </h1>
-		<div class="allTabs">
+		<h1 class="center"> Connect Four </h1>
+		<div class="center">
         <div class="tab">
             <input type="radio" id="tab-1" name="game_type" checked>
             <label for="tab-1">Human vs Human</label>
@@ -26,8 +26,8 @@
             <label for="tab-4">Bot vs Bot</label>
         </div>
     </div>
-		<h3 id="player_turn"> Player 1's Move </h3>
-		<div id="grid_div" style="width:700px;height:600px">
+		<h3 class="center" id="player_turn"> Player 1's Move </h3>
+		<div id="grid_div">
 			<svg id="grid" width="100%" height="100%">
 				<defs>
 				<pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
@@ -38,9 +38,9 @@
 				<rect width="100%" height="100%" stroke="#000000" fill="url(#grid)" />
 			</svg>
 		</div>
-		<div id="drop_buttons">
+		<div class="center" id="drop_buttons">
 		</div>
-		<div id="game_end" style="display: none;">
+		<div class="center" id="game_end" style="display: none;">
 			<p style="font-size: 30px"></p>
 			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
 		</div>
