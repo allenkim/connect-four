@@ -9,12 +9,29 @@ for (var row = 0; row < height; row++){
 }
 
 var playerTurn = 1;
+var gameOver = false;
+
+function playerWon(row,col){
+  // TODO: Return true if this row,col is a winning move, otherwise false
+  return Math.random() < 0.5;
+}
 
 function makeMove(col){
+  if (gameOver)
+    return false;
   for (var row = height - 1; row >= 0; row--){
     if (!grid[row][col]){
       grid[row][col] = playerTurn;
-      playerTurn = 3 - playerTurn;
+      if (playerWon(row,col)){
+        gameOver = true;
+        var game_end = document.getElementById('game_end');
+        game_end.childNodes[1].innerHTML = "Player " + playerTurn + " wins!";
+        game_end.style.display = 'block';
+      }
+      else{
+        playerTurn = 3 - playerTurn;
+        document.getElementById('player_turn').innerHTML = "Player's " + playerTurn + " Move";
+      }
       drawGrid();
       return true;
     }
@@ -38,6 +55,10 @@ function drawGrid(){
 }
 
 function resetGrid(){
+  document.getElementById('game_end').style.display = 'none';
+  playerTurn = 1;
+  document.getElementById('player_turn').innerHTML = "Player's " + playerTurn + " Move";
+  gameOver = false;
   for (var row = 0; row < height; row++){
     for (var col = 0; col < width; col++){
       grid[row][col] = 0;

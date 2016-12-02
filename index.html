@@ -3,13 +3,30 @@
 	<head>
 		<meta charset="utf-8">
 		<title> Connect Four </title>
-		<style>
-			input { width: 100px; }
-		</style>
+		<link href="style.css" rel="stylesheet">
 		<script src=connectFour.js defer></script>
 	</head>
 	<body>
 		<h1> Connect Four </h1>
+		<div class="allTabs">
+        <div class="tab">
+            <input type="radio" id="tab-1" name="game_type" checked>
+            <label for="tab-1">Human vs Human</label>
+        </div>
+        <div class="tab">
+            <input type="radio" id="tab-2" name="game_type">
+            <label for="tab-2">Human vs Bot</label>
+        </div>
+        <div class="tab">
+            <input type="radio" id="tab-3" name="game_type">
+            <label for="tab-3">Bot vs Human</label>
+        </div>
+				<div class="tab">
+            <input type="radio" id="tab-4" name="game_type">
+            <label for="tab-4">Bot vs Bot</label>
+        </div>
+    </div>
+		<h3 id="player_turn"> Player 1's Move </h3>
 		<div id="grid_div" style="width:700px;height:600px">
 			<svg id="grid" width="100%" height="100%">
 				<defs>
@@ -22,6 +39,10 @@
 			</svg>
 		</div>
 		<div id="drop_buttons">
+		</div>
+		<div id="game_end" style="display: none;">
+			<p style="font-size: 30px"></p>
+			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
 		</div>
 		<script>
 			var height = document.getElementById('grid_div').offsetHeight;
