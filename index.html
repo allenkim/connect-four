@@ -5,38 +5,41 @@
 		<title> Connect Four </title>
 		<link href="style.css" rel="stylesheet">
 		<script src=connectFour.js defer></script>
+		<script src=bots.js defer></script>
 	</head>
 	<body>
 		<h1 class="center"> Connect Four </h1>
-		<div class="center">
-        <div class="tab">
-            <input type="radio" id="h_v_h" name="game_type" checked>
-            <label for="h_v_h">Human vs Human</label>
-        </div>
-        <div class="tab">
-            <input type="radio" id="h_v_b" name="game_type">
-            <label for="h_v_b">Human vs Bot</label>
-        </div>
-        <div class="tab">
-            <input type="radio" id="b_v_h" name="game_type">
-            <label for="b_v_h">Bot vs Human</label>
-        </div>
-				<div class="tab">
-            <input type="radio" id="b_v_b" name="game_type">
-            <label for="b_v_b">Bot vs Bot</label>
-        </div>
-    </div>
-		<h3 class="center" id="player_turn"> Player 1's Move </h3>
-		<div id="grid_div">
-			<svg id="grid" width="100%" height="100%">
-				<defs>
-				<pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-				<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="0.5"/>
-				</pattern>
-				</defs>
+		<h2 class="center" id="player_turn"> Player 1's Move </h3>
+		<div class="center" style="width:1200px; clear:both; margin: auto;">
+			<div style="width: 250px; float: left;">
+				<h3> Player 1 <h3>
+				<form class="player_options">
+					<div>
+	            <input type="radio" id="human_1" name="options_1" checked>
+	            <label for="human_1">Human</label>
+	        </div>
+				</form>
+			</div>
+			<div id="grid_div">
+				<svg id="grid" width="100%" height="100%">
+					<defs>
+					<pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+					<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="0.5"/>
+					</pattern>
+					</defs>
 
-				<rect width="100%" height="100%" stroke="#000000" fill="url(#grid)" />
-			</svg>
+					<rect width="100%" height="100%" stroke="#000000" fill="url(#grid)" />
+				</svg>
+			</div>
+			<div style="width: 250px; float: left;">
+				<h3> Player 2 <h3>
+				<form class="player_options">
+					<div>
+	            <input type="radio" id="human_2" name="options_2" checked>
+	            <label for="human_2">Human</label>
+	        </div>
+				</form>
+			</div>
 		</div>
 		<div class="center" id="drop_buttons">
 		</div>
@@ -69,6 +72,7 @@
 				var button = document.createElement('input');
 				button.setAttribute('type','button');
 				button.setAttribute('value','Drop Col ' + col);
+				button.setAttribute('style','width:100px;');
 				button.setAttribute('onclick','makeMove(' + col + ')');
 				button_div.appendChild(button);
 			}

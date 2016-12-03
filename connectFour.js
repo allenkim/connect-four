@@ -12,68 +12,41 @@ for (var row = 0; row < height; row++){
 
 // playerTurn is either 1 or 2, indicating the player whose turn it is
 var playerTurn = 1;
-
 // Move number is a counter of the moves that goes up to 42
 var moveNumber = 1;
-
 // Boolean to indicate if game is over or not
 var gameOver = false;
 
 // Boolean whether bot is computing a move right now
 var botThinking = false;
+// Minimum number of milliseconds bots have to take before making a move
+var botDelay = 500;
+// players[1] is the first player and players[2] is the second player
+var players = [,"Human", "Human"]
 
-/* botTurn indicates which players are bots
- * 0: bot is not playing
- * 1: bot is playing as player 1
- * 2: bot is playing as player 2
- * 3: bot is playing as both players
- */
-var botTurn = 0;
-document.getElementById('h_v_h').onclick = function() {
-  if (botTurn !== 0){
-    botTurn = 0;
-  }
+// Onclick events for the radio button selection
+document.getElementById("human_1").onclick = function() {
+  players[1] = "Human";
 };
-document.getElementById('b_v_h').onclick = function() {
-  if (botTurn !== 1){
-    botTurn = 1;
-    if (playerTurn == 1)
-      makeBotMove();
-  }
-};
-document.getElementById('h_v_b').onclick = function() {
-  if (botTurn !== 2){
-    botTurn = 2;
-    if (playerTurn == 2)
-      makeBotMove();
-  }
-};
-document.getElementById('b_v_b').onclick = function() {
-  if (botTurn !== 3){
-    botTurn = 3;
-    makeBotMove();
-  }
+document.getElementById("human_2").onclick = function() {
+  players[2] = "Human";
 };
 
-/*
- * Computes the column the bot will make its next move in
- */
-function computeBotMove(){
-  while (!gameOver){
-    var col = Math.floor(Math.random() * 7);
-    if (moveRow(col,true))
-      return col;
-  }
-}
+var bots = {}
+// Object of all different bots made
 
 /*
  * makeBotMove makes a move for the bot
  */
 function makeBotMove(){
-  if (botThinking || (botTurn !== 3 && botTurn !== playerTurn))
+  if (botThinking || (players[playerTurn] === "Human"))
     return false;
-
-  var col = computeBotMove();
+  botThinking = true;
+  var thinking = setTimeout(function(){
+    botThinking = false;
+    makeBotMove();
+  },botDelay)
+  var col = bots[players[playerTurn]]();
   makeMove(col,true);
 }
 
@@ -82,12 +55,16 @@ function makeBotMove(){
  * If so, return true (the player won)
  * else, return false
  */
-function playerWon(row,col){
+function playerWon(row,col,currentColor){
   // TODO: Return true if this row,col is a winning move, otherwise false
   // Win condition : 4 in row, 4 in a col, 4 in a diagonal
   // row = 3, col = 4
+  if (row < 0 || col < 0 || row >= height || col >= width)
+    return false;
 
-  var currentColor = grid[row][col];
+  var tmp = grid[row][col];
+  grid[row][col] = currentColor;
+
   var count = 0;
 
   // Iterate through the columns
@@ -100,7 +77,8 @@ function playerWon(row,col){
           // Increment the count
           count++;
           if (count >= 4) {
-              return true;
+            grid[row][col] = tmp;
+            return true;
           }
       }
   }
@@ -116,7 +94,8 @@ function playerWon(row,col){
       else {
           count ++;
           if (count >= 4) {
-              return true;
+            grid[row][col] = tmp;
+            return true;
           }
       }
   }
@@ -139,7 +118,8 @@ function playerWon(row,col){
       else {
           count++;
           if (count >= 4) {
-              return true;
+            grid[row][col] = tmp;
+            return true;
           }
       }
       i++;
@@ -170,12 +150,14 @@ function playerWon(row,col){
       else {
           count++;
           if (count >= 4){
-              return true;
+            grid[row][col] = tmp;
+            return true;
           }
       }
       i++;
   }
   // By default return false, the game still continues
+  grid[row][col] = tmp;
   return false;
 }
 
@@ -199,26 +181,30 @@ function moveRow(col){
 function makeMove(col,isBot){
   var isBot = (typeof isBot !== 'undefined') ?  isBot : false;
 
-  // if game is over or its the bot's turn and the move, then moves are not allowed
-  if (gameOver || (!isBot && (botTurn === 3 || botTurn === playerTurn)))
+  // if game is over or its the bot's turn and the player move, then moves are not allowed
+  if (gameOver || (!isBot && (players[playerTurn] !== "Human")))
     return false;
 
   // we check from the bottom up to see if a move can be played
   var row = moveRow(col);
   if (row !== -1){
     grid[row][col] = playerTurn;
-    moveNumber++;
-    if (moveNumber === width*height || playerWon(row,col)){
-      gameOver = true;
+    if (moveNumber === width*height || playerWon(row,col,playerTurn)){
       var game_end = document.getElementById('game_end');
-      game_end.childNodes[1].innerHTML = "Player " + playerTurn + " wins!";
+      if (moveNumber === width*height)
+        game_end.childNodes[1].innerHTML = "Draw!";
+      else{
+        game_end.childNodes[1].innerHTML = "Player " + playerTurn + " wins!";
+      }
       game_end.style.display = 'block';
+      gameOver = true;
     }
     else{
       playerTurn = 3 - playerTurn; // toggles between player 1 and 2
       document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
       makeBotMove();
     }
+    moveNumber++;
     drawGrid();
   }
 }
@@ -230,6 +216,7 @@ function makeMove(col,isBot){
 function resetGrid(){
   document.getElementById('game_end').style.display = 'none';
   playerTurn = 1;
+  moveNumber = 1;
   document.getElementById('player_turn').innerHTML = "Player 1's Move";
   gameOver = false;
   for (var row = 0; row < height; row++){

@@ -2,25 +2,23 @@ h1 {
   font-size: 250%;
 }
 
-h3 {
+h2 {
   font-size: 200%;
 }
 
-input {
-  width: 100px;
+h3 {
+  font-size: 150%;
 }
 
-.center {
-  text-align: center;
+input[type="radio"] {
+  margin-right: 0;
 }
 
-.tab {
-  display: inline-block;
-}
-
-.tab label {
-    padding: 10px;
-    border: 1px solid #ccc;
+label {
+  font-weight: normal;
+  font-size: 20px;
+  padding: 3px;
+  border: 1px solid #ccc;
 }
 
 [type=radio]:checked ~ label {
@@ -28,8 +26,14 @@ input {
     border-bottom: 4px solid gray;
 }
 
+.center {
+  text-align: center;
+  clear: left;
+}
+
 #grid_div {
   margin: auto;
+  float: left;
   width:700px;
   height:600px;
 }
