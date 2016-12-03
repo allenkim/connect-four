@@ -53,6 +53,7 @@ for (var i = 1; i <= 2; i++){
       continue;
     var id = bot+'_'+i;
     var button_div = document.createElement('div');
+    button_div.setAttribute('class','left_align');
     var option = document.createElement('input');
     option.setAttribute('type','radio');
     option.setAttribute('id', id);

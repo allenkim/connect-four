@@ -14,7 +14,7 @@
 			<div style="width: 250px; float: left;">
 				<h3> Player 1 <h3>
 				<form class="player_options">
-					<div>
+					<div class="left_align">
 	            <input type="radio" id="human_1" name="options_1" checked>
 	            <label for="human_1">Human</label>
 	        </div>
@@ -24,7 +24,7 @@
 				<svg id="grid" width="100%" height="100%">
 					<defs>
 					<pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-					<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="0.5"/>
+					<path d="M 100 0 L 0 0 0 100" fill="none" stroke="black" stroke-width="1"/>
 					</pattern>
 					</defs>
 
@@ -34,7 +34,7 @@
 			<div style="width: 250px; float: left;">
 				<h3> Player 2 <h3>
 				<form class="player_options">
-					<div>
+					<div class="left_align">
 	            <input type="radio" id="human_2" name="options_2" checked>
 	            <label for="human_2">Human</label>
 	        </div>
@@ -60,7 +60,7 @@
 					cell.setAttribute('id',row/boxSize+'-'+col/boxSize);
 					cell.setAttribute('cx',col+(boxSize/2));
 					cell.setAttribute('cy',row+(boxSize/2));
-					cell.setAttribute('r',boxSize/2);
+					cell.setAttribute('r',boxSize/2 - 1);
           cell.setAttribute('fill','white');
 					svg.appendChild(cell);
 				}
