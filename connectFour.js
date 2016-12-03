@@ -20,7 +20,7 @@ var gameOver = false;
 // Boolean whether bot is computing a move right now
 var botThinking = false;
 // Minimum number of milliseconds bots have to take before making a move
-var botDelay = 500;
+var botDelay = 100;
 // players[1] is the first player and players[2] is the second player
 var players = [,"Human", "Human"]
 
@@ -55,7 +55,7 @@ function makeBotMove(){
  * If so, return true (the player won)
  * else, return false
  */
-function playerWon(row,col,currentColor){
+function playerWon(row,col,currentColor,grid){
   // TODO: Return true if this row,col is a winning move, otherwise false
   // Win condition : 4 in row, 4 in a col, 4 in a diagonal
   // row = 3, col = 4
@@ -189,7 +189,7 @@ function makeMove(col,isBot){
   var row = moveRow(col);
   if (row !== -1){
     grid[row][col] = playerTurn;
-    if (moveNumber === width*height || playerWon(row,col,playerTurn)){
+    if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
       var game_end = document.getElementById('game_end');
       if (moveNumber === width*height)
         game_end.childNodes[1].innerHTML = "Draw!";

@@ -29,21 +29,43 @@ bots["Pure_Random_Bot"] = function(){
 bots["Basic_Bot"] = function(){
   for (var col = 0; col < width; col++){
     var row = moveRow(col);
-    if (row !== -1 && playerWon(row,col,playerTurn)){
+    if (row !== -1 && playerWon(row,col,playerTurn,grid)){
       return col;
     }
   }
   for (var col = 0; col < width; col++){
     var row = moveRow(col);
-    if (row !== -1 && playerWon(row,col,3-playerTurn)){
+    if (row !== -1 && playerWon(row,col,3-playerTurn,grid)){
       return col;
     }
   }
   while (!gameOver){
     var col = Math.floor(Math.random() * 7);
-    if (moveRow(col))
+    if (moveRow(col) != -1)
       return col;
   }
+}
+
+// player is either 1 or 2
+function numWinningStates(player,grid){
+  // TODO: Find number of winning states for player given grid
+}
+
+function heuristic(row,col,grid){
+
+  if (playerWon(row,col,1,grid))
+    return Infinity;
+
+  if (playerWon(row,col,2,grid))
+    return -Infinity;
+
+  // Number of ways player 1 can win - number of ways player 2 can win
+
+}
+
+// Player 1 is max, player 2 is min
+bots["Minimax_Bot"] = function(){
+
 }
 
 var player_options = document.getElementsByClassName("player_options");
