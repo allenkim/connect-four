@@ -135,7 +135,7 @@ function playerWon(row,col,currentColor){
   }
   // Otherwise acheive the column to be equal to 6
   else {
-      var difference = width - col; // The difference we need for the top right corner is the width - col
+      var difference = width - col - 1; // The difference we need for the top right corner is the width - col - 1
       topRightRow = row - difference;
       topRightCol = col + difference;
   }
