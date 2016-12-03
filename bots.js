@@ -46,9 +46,56 @@ bots["Basic_Bot"] = function(){
   }
 }
 
+// Custom Object with a constructor
+class Point {
+  constructor(row, col) {
+    this.row = row;
+    this.col = col;
+  }
+}
+
 // player is either 1 or 2
 function numWinningStates(player,grid){
   // TODO: Find number of winning states for player given grid
+  var totalWinningStates = 4 * 6 + 3 * 7 + 24;
+  var otherPlayer = 3 - player;
+
+  // Check each row
+  for (var row = 0; row < height; row++) {
+    for (var col = 0; col <= width - 4; col++) {
+      for (var i = 0; i < 4; i++) {
+        // Refer to the other player we're looking at
+        if (grid[row][col] === otherPlayer) {
+          totalWinningStates--;
+          break;
+        }
+      }
+    }
+  }
+
+  // Check each column
+  for (var col = 0; col < width; col++) {
+    for (var row = 0; row <= height - 4; row++) {
+      for (var i = 0; i < 4; i++) {
+        if (grid[row][col] === otherPlayer) {
+          totalWinningStates--;
+          break;
+        }
+      }
+    }
+  }
+
+  // Check from top left to bottom right
+  // Below are the first 6 points to start
+  var topLeftCoordinates = [
+    new Point(2, 0),
+    new Point(1, 0),
+    new Point(0, 0),
+    new Point(0, 1),
+    new Point(0, 2),
+    new Point(0, 3)
+  ];
+
 }
 
 function heuristic(row,col,grid){
