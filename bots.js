@@ -63,7 +63,7 @@ function numWinningStates(player,grid){
     for (var col = 0; col <= width - 4; col++) {
       for (var i = 0; i < 4; i++) {
         // Refer to the other player we're looking at
-        if (grid[row][col] === otherPlayer) {
+        if (grid[row][col + i] === otherPlayer) {
           totalWinningStates--;
           break;
         }
@@ -77,7 +77,7 @@ function numWinningStates(player,grid){
   for (var col = 0; col < width; col++) {
     for (var row = 0; row <= height - 4; row++) {
       for (var i = 0; i < 4; i++) {
-        if (grid[row][col] === otherPlayer) {
+        if (grid[row + i][col] === otherPlayer) {
           totalWinningStates--;
           break;
         }
@@ -102,14 +102,15 @@ function numWinningStates(player,grid){
     var point = topLeftCoordinates[i];
     var row, tempRow, col, tempCol;
 
-
+    row = tempRow = point.row;
+    col = tempCol = point.col;
 
     // Only do the check if there are 4 available spaces ahead
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
         break;
-      row = tempRow = point.row;
-      col = tempCol = point.col;
+      tempRow = row;
+      tempCol = col;
       // Check the next four points, if the other player has a piece at the point
       // then break out of the loop
       for (var j = 0; j < 4; j++) {
@@ -124,8 +125,6 @@ function numWinningStates(player,grid){
       row++;
       col++;
     }
-
-    return totalWinningStates;
   }
 
   // Check from top right to bottom left
@@ -143,13 +142,14 @@ function numWinningStates(player,grid){
     var point = topRightCoordinates[i];
     var row, tempRow, col, tempCol;
 
-
+    row = tempRow = point.row;
+    col = tempCol = point.col;
 
     while (grid[row + 3] !== undefined) {
-      if (grid[row + 3][col + 3] === undefined)
+      if (grid[row + 3][col - 3] === undefined)
         break;
-      row = tempRow = point.row;
-      col = tempCol = point.col;
+      tempRow = row;
+      tempCol = col;
       for (var j = 0; j < 4; j++) {
         if (grid[tempRow][tempCol] === otherPlayer) {
           totalWinningStates--;
@@ -158,10 +158,11 @@ function numWinningStates(player,grid){
         tempRow++;
         tempCol--;
       }
+      row++;
+      col--;
     }
-    row++;
-    col--;
   }
+  return totalWinningStates;
 }
 
 // returns if grid is winning state for the player
