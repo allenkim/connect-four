@@ -230,14 +230,15 @@ function winningState(player,grid){
     var point = topLeftCoordinates[i];
     var row, tempRow, col, tempCol;
 
-
+    row = tempRow = point.row;
+    col = tempCol = point.col;
 
     // Check if the fourth space ahead exists
     while (grid[row + 3] !== undefined) {
       if (grid[row][col] === undefined)
         break;
-      row = tempRow = point.row;
-      col = tempCol = point.col;
+      tempRow = row;
+      tempCol = col;
       var count = 0;
       // Check if the next 4 is the winning move
       for (var j = 0; j < 4; j++) {
@@ -247,7 +248,7 @@ function winningState(player,grid){
           tempCol++;
           if (count >= 4) {
             // TODO: Check if this screws up
-            console.log("Top Left -> Bottom Right Count: " + count);
+            // console.log("Top Left -> Bottom Right Count: " + count);
             return true;
           }
         }
@@ -290,7 +291,7 @@ function winningState(player,grid){
             tempCol--;
             if (count >= 4) {
               // TODO: Check if this screws up
-              console.log("Top Right -> Bottom left Count: " + count);
+              // console.log("Top Right -> Bottom left Count: " + count);
               return true;
             }
           }
