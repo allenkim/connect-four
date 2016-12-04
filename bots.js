@@ -106,7 +106,7 @@ function numWinningStates(player,grid){
     // Only do the check if there are 4 available spaces ahead
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
-      break;
+        break;
       // Check the next four points, if the other player has a piece at the point
       // then break out of the loop
       for (var j = 0; j < 4; j++) {
@@ -132,7 +132,7 @@ function numWinningStates(player,grid){
     new Point(0, 6),
     new Point(1, 6),
     new Point(2, 6)
-  ]
+  ];
 
   for (var i = 0; i < topRightCoordinates.length; i++) {
     var point = topRightCoordinates[i];
@@ -143,7 +143,7 @@ function numWinningStates(player,grid){
 
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
-      break;
+        break;
       for (var j = 0; j < 4; j++) {
         if (grid[tempRow][tempCol] === otherPlayer) {
           totalWinningStates--;
@@ -162,7 +162,6 @@ function numWinningStates(player,grid){
 // returns if grid is winning state for the player
 // eseentially checking if grid contains a 4-in-a-row for the player
 function winningState(player,grid){
-  // TODO: implement this
   // Check the column, only need to check rows 0 to 2
   // If there is a winning state return true
   for (var row = 0; row < height / 2; row++) {
@@ -174,12 +173,15 @@ function winningState(player,grid){
         var count = 0;
         var tempRow = row; // Refer to the current row
         for (var i = 0; i < 4; i++) {
-          if (grid[tempRow][col] === player)
+          if (grid[tempRow][col] === player) {
             count++;
+            if (count >= 4) {
+              console.log("Checking rows, Count: " + count)
+              return true;
+            }
+          }
           else
             break;
-          if (count >= 4)
-            return true;
         }
       }
     }
@@ -196,18 +198,109 @@ function winningState(player,grid){
         var count = 0;
         var tempCol = col; // Refer to the current col
         for (var i = 0; i < 4; i++) {
-          if (grid[row][tempCol] === player)
+          if (grid[row][tempCol] === player) {
             count++;
+            if (count >= 4) {
+              console.log("Checking columns, Count: " + count)
+              return true;
+            }
+          }
           else
             break;
-          if (count >= 4)
-            return true;
         }
       }
     }
   }
 
-  
+  // Check from the top left to the bottom right
+  var topLeftCoordinates = [
+    new Point(2, 0),
+    new Point(1, 0),
+    new Point(0, 0),
+    new Point(0, 1),
+    new Point(0, 2),
+    new Point(0, 3)
+  ];
+
+  // Go through all of the top left coordinates
+  for (var i = 0; i < topLeftCoordinates.length; i++) {
+    var point = topLeftCoordinates[i];
+    var row, tempRow, col, tempCol;
+
+    row = tempRow = point.row;
+    col = tempCol = point.col;
+
+    // Check if the fourth space ahead exists
+    while (grid[row + 3] !== undefined) {
+      if (grid[row][col] === undefined)
+        break;
+      var count = 0;
+      // Check if the next 4 is the winning move
+      for (var j = 0; j < 4; j++) {
+        if(grid[tempRow][tempCol] === player) {
+          count++;
+          tempRow++;
+          tempCol++;
+          if (count >= 4) {
+            // TODO: Check if this screws up
+            console.log("Top Left -> Bottom Right Count: " + count);
+            return true;
+          }
+        }
+        else {
+          break;
+        }
+      }
+      row++;
+      col++;
+    }
+
+    // Check from the top right to bottom left
+    var topRightCoordinates = [
+      new Point(0, 3),
+      new Point(0, 4),
+      new Point(0, 5),
+      new Point(0, 6),
+      new Point(1, 6),
+      new Point(2, 6)
+    ];
+
+    // Go through all possible top right coordinates
+    for (var i = 0; i < topRightCoordinates.length; i++) {
+      var point = topRightCoordinates[i];
+      var row, tempRow, col, tempCol;
+
+      row = tempRow = point.row;
+      col = tempCol = point.col;
+
+      while (grid[row + 3] !== undefined) {
+        if (grid[row + 3][col + 3] === undefined)
+          break;
+        var count = 0;
+        for (var j = 0; j < 4; j++) {
+          if (grid[tempRow][tempCol] === player) {
+            count++;
+            tempRow++
+            tempCol--;
+            if (count >= 4) {
+              // TODO: Check if this screws up
+              console.log("Top Right -> Bottom left Count: " + count);
+              return true;
+            }
+          }
+          else {
+            break;
+          }
+        }
+        row++;
+        col--;
+      }
+    }
+
+    // After checking all of the cases, we determine that this board is not
+    // a winning board
+    return false;
+  }
 }
 
 function heuristic(row,col,grid){
