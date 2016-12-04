@@ -211,11 +211,14 @@ function makeMove(col,isBot){
       var drop = document.getElementById('drop-'+col);
       drop.setAttribute("fill-opacity",1);
       drop.setAttribute("fill",playerTurn===1?"yellow":"red");
-      TweenLite.to(drop, 0.5, {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
+      TweenLite.to(drop, 0.08*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         playerTurn = 3 - playerTurn; // toggles between player 1 and 2
         document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
         makeBotMove();
         drawGrid();
+        drop.setAttribute('style','');
+        for (var c = 0; c < width; c++)
+          document.getElementById('drop-'+c).setAttribute("fill-opacity",0);
         makingMove = false;
       }});
       TweenLite.set(drop, {clearProps:"x, y"});

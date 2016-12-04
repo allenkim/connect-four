@@ -335,7 +335,7 @@ function copyGrid(grid){
 }
 
 // Deepest check for our state space graph
-var maxDepth = 5;
+var maxDepth = 3;
 
 // Best position to play that will most likely win for the Minimax_Bot
 var minimaxCol;

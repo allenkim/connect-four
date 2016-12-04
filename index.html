@@ -42,8 +42,6 @@
 				</form>
 			</div>
 		</div>
-		<div class="center" id="drop_buttons">
-		</div>
 		<div class="center" id="game_end" style="display: none;">
 			<p style="font-size: 30px"></p>
 			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
@@ -53,10 +51,13 @@
 			var height = document.getElementById('grid_div').offsetHeight - boxSize;
 			var width = document.getElementById('grid_div').offsetWidth;
 			var svg = document.getElementById('grid');
+			var playerTurn = 1;
+			var makingMove = false;
+			var players = [,"Human", "Human"]
 			// Initialize drop circles on top
 			for (var col = 0; col < width; col += boxSize){
 				var cell = document.createElementNS("http://www.w3.org/2000/svg",'circle');
-				cell.setAttribute('id','drop'+'-'+col/boxSize);
+				cell.setAttribute('id','drop-'+col/boxSize);
 				cell.setAttribute('class','.drop');
 				cell.setAttribute('cx',col+(boxSize/2));
 				cell.setAttribute('cy',boxSize/2);
@@ -68,24 +69,32 @@
 			for (var row = 0; row < height; row += boxSize){
 				for (var col = 0; col < width; col += boxSize){
 					var cell = document.createElementNS("http://www.w3.org/2000/svg",'circle');
-					cell.setAttribute('id',row/boxSize+'-'+col/boxSize);
+					var id = row/boxSize+'-'+col/boxSize;
+					cell.setAttribute('id',id);
 					cell.setAttribute('cx',col+(boxSize/2));
 					cell.setAttribute('cy',row+boxSize+(boxSize/2));
 					cell.setAttribute('r',boxSize/2 - 1);
           cell.setAttribute('fill-opacity','0');
 					svg.appendChild(cell);
+					(function(id,col){
+			      document.getElementById(id).onmousemove = function() {
+							if (makingMove || players[playerTurn] !== "Human")
+								return;
+							for (var i = 0; i < width; i++){
+								var drop = document.getElementById('drop-'+i);
+								if (i === col){
+									drop.setAttribute("fill-opacity",1)
+									drop.setAttribute("fill",playerTurn===1?"yellow":"red");
+								}
+								else
+									drop.setAttribute("fill-opacity",0);
+							}
+			      };
+						document.getElementById(id).onclick = function() {
+							makeMove(col);
+			      };
+			    })(id,col/boxSize);
 				}
-			}
-
-			// Intialize the buttons below the columns for the dropping
-			var button_div = document.getElementById('drop_buttons');
-			for (var col = 0; col < width/boxSize; col++){
-				var button = document.createElement('input');
-				button.setAttribute('type','button');
-				button.setAttribute('value','Drop Col ' + col);
-				button.setAttribute('style','width:100px;');
-				button.setAttribute('onclick','makeMove(' + col + ')');
-				button_div.appendChild(button);
 			}
 
 		</script>
