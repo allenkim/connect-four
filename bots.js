@@ -71,6 +71,8 @@ function numWinningStates(player,grid){
     }
   }
 
+  console.log("After rows: " + totalWinningStates);
+
   // Check each column
   for (var col = 0; col < width; col++) {
     for (var row = 0; row <= height - 4; row++) {
@@ -82,6 +84,8 @@ function numWinningStates(player,grid){
       }
     }
   }
+
+  console.log("After cols: " + totalWinningStates);
 
   // Check from top left to bottom right
   // Below are the first 6 points to start
