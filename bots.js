@@ -310,12 +310,12 @@ function winningState(player,grid){
   }
 }
 
-function heuristic(row,col,grid){
+function heuristic(grid){
   if (winningState(1,grid))
-  return Infinity;
+    return Infinity;
 
   if (winningState(2,grid))
-  return -Infinity;
+    return -Infinity;
 
   // Number of ways player 1 can win - number of ways player 2 can win
   return numWinningStates(1,grid) - numWinningStates(2,grid);
@@ -326,22 +326,87 @@ function copyGrid(grid){
   for (var row = 0; row < height; row++){
     copyGrid.push([]);
     for (var col = 0; col < width; col++)
-    // 0 means empty, 1 means first player (yellow), 2 means second player (red)
-    copyGrid[row][col] = grid[row][col];
+      // 0 means empty, 1 means first player (yellow), 2 means second player (red)
+      copyGrid[row][col] = grid[row][col];
   }
   return copyGrid;
 }
 
+// Deepest check for our state space graph
+var maxDepth = 5;
+
+// Best position to play that will most likely win for the Minimax_Bot
+var minimaxCol;
+
 // returns best move with heuristic
-function minimax(move, depth, player){
+function minimax(grid, depth, player){
   // TODO: Implement minimax
-  // move should be {grid: new grid state, value: heuristic}?
+  // move should be {grid: new grid state, column : number}?
+  if (depth === 0 || isGridFull(grid)) {
+    return heuristic(grid);
+  }
+
+  // Max's turn
+  if (player === 1) {
+    var bestValue = -Infinity;
+    for (var col = 0; col < width; col++) {
+      // Stores the row position if played at the column
+      var row = moveRow(col);
+      // if it's a valid move
+      if (row !== -1) {
+        var copiedGrid = copyGrid(grid);
+        // Update the coordinates to have the player
+        copiedGrid[row][col] = player;
+        var currentValue = minimax(copiedGrid, depth - 1, 2);
+        if (currentValue > bestValue) {
+          bestValue = currentValue;
+          if (depth === maxDepth) {
+            minimaxCol = col;
+          }
+        }
+      }
+    }
+    return bestValue;
+  }
+  // Min's turn
+  else {
+    var bestValue = Infinity;
+    for (var col = 0; col < width; col++) {
+      // Stores the row position if played at the column
+      var row = moveRow(col);
+      // if it's a valid move
+      if (row !== -1) {
+        var copiedGrid = copyGrid(grid);
+        // Update the coordinates to have the player
+        copiedGrid[row][col] = player;
+        var currentValue = minimax(copiedGrid, depth - 1, 1);
+        if (currentValue < bestValue) {
+          bestValue = currentValue;
+          if (depth === maxDepth) {
+            minimaxCol = col;
+          }
+        }
+      }
+    }
+    return bestValue;
+  }
+}
+
+// Checks if the grid is full
+function isGridFull(grid) {
+  for (var row = 0; row < height; row++) {
+    for (var col = 0; col < width; col++) {
+      if (grid[row][col] === 0)
+        return false;
+    }
+  }
+  return true;
 }
 
 // Player 1 is max, player 2 is min
 bots["Minimax_Bot"] = function(){
-  //var move = minimax(copyGrid(grid), 5, playerTurn);
-  //return move.col;
+  minimax(copyGrid(grid), maxDepth, playerTurn);
+  return minimaxCol;
 }
 
 var player_options = document.getElementsByClassName("player_options");
