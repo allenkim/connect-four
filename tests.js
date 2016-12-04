@@ -152,7 +152,7 @@ QUnit.test( "Test winningState", function( assert ) {
     [1,1,1,1,2,2,1]
   ];
   // Test #15
-  assert.equal(winningState(1,grid), false);
+  assert.equal(winningState(1,grid), true);
   // Test #16
   assert.equal(winningState(2,grid), true);
 
