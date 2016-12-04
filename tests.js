@@ -129,4 +129,57 @@ QUnit.test( "Test winningState", function( assert ) {
   assert.equal(winningState(1,grid), true);
   // Test #12
   assert.equal(winningState(2,grid), false);
+
+  grid = [
+    [1,0,0,0,0,0,0],
+    [1,1,0,0,0,0,0],
+    [2,2,1,2,0,0,0],
+    [2,1,2,1,1,2,1],
+    [2,2,1,1,2,2,1],
+    [1,1,1,1,2,2,1]
+  ];
+  // Test #13
+  assert.equal(winningState(1,grid), true);
+  // Test #14
+  assert.equal(winningState(2,grid), false);
+
+  grid = [
+    [0,0,0,0,0,0,2],
+    [1,1,0,0,0,2,2],
+    [2,2,1,2,2,1,2],
+    [2,1,2,2,1,2,1],
+    [2,2,1,1,2,2,1],
+    [1,1,1,1,2,2,1]
+  ];
+  // Test #15
+  assert.equal(winningState(1,grid), false);
+  // Test #16
+  assert.equal(winningState(2,grid), true);
+
+  grid = [
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [1,1,1,0,2,2,2],
+    [1,1,1,0,2,2,2],
+    [1,1,1,0,2,2,2]
+  ];
+  // Test #17
+  assert.equal(winningState(1,grid), false);
+  // Test #18
+  assert.equal(winningState(2,grid), false);
+
+  grid = [
+    [0,0,0,0,0,1,2],
+    [1,1,0,0,1,2,2],
+    [2,2,2,1,1,1,2],
+    [2,1,1,2,1,2,1],
+    [2,2,1,1,2,2,1],
+    [1,1,1,1,2,1,1]
+  ];
+  // Test #19
+  assert.equal(winningState(1,grid), true);
+  // Test #20
+  assert.equal(winningState(2,grid), false);
+
 });
