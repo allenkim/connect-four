@@ -261,7 +261,6 @@ function drawGrid(){
         cell.setAttribute('fill',color);
       }
       else{
-        console.log(row+'-'+col);
         cell.setAttribute('fill-opacity','0');
       }
     }
