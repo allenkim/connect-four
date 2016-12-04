@@ -1,4 +1,4 @@
-var height = document.getElementById('grid_div').offsetHeight / boxSize;
+var height = document.getElementById('grid_div').offsetHeight / boxSize - 1;
 var width = document.getElementById('grid_div').offsetWidth / boxSize;
 var tick; // for setInterval
 
@@ -17,6 +17,8 @@ var moveNumber = 1;
 // Boolean to indicate if game is over or not
 var gameOver = false;
 
+// Boolean to check if move is being made
+var makingMove = false;
 // Boolean whether bot is computing a move right now
 var botThinking = false;
 // Minimum number of milliseconds bots have to take before making a move
@@ -179,6 +181,9 @@ function moveRow(col){
  * it should be true when called by bots
  */
 function makeMove(col,isBot){
+  if (makingMove){
+    return false;
+  }
   var isBot = (typeof isBot !== 'undefined') ?  isBot : false;
 
   // if game is over or its the bot's turn and the player move, then moves are not allowed
@@ -188,6 +193,7 @@ function makeMove(col,isBot){
   // we check from the bottom up to see if a move can be played
   var row = moveRow(col);
   if (row !== -1){
+    makingMove = true;
     grid[row][col] = playerTurn;
     if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
       var game_end = document.getElementById('game_end');
@@ -198,14 +204,22 @@ function makeMove(col,isBot){
       }
       game_end.style.display = 'block';
       gameOver = true;
+      drawGrid();
     }
     else{
-      playerTurn = 3 - playerTurn; // toggles between player 1 and 2
-      document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
-      makeBotMove();
+      var drop = document.getElementById('drop-'+col);
+      drop.setAttribute("fill-opacity",1);
+      drop.setAttribute("fill",playerTurn===1?"yellow":"red");
+      TweenLite.to(drop, 2, {x:0, y:(row+1)*100, ease: Elastic.easeIn, onComplete: function(){
+        playerTurn = 3 - playerTurn; // toggles between player 1 and 2
+        document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
+        makeBotMove();
+        drawGrid();
+        makingMove = false;
+      }});
+      TweenLite.set(drop, {clearProps:"x, y"});
     }
     moveNumber++;
-    drawGrid();
   }
 }
 
@@ -242,7 +256,14 @@ function drawGrid(){
         color = 'yellow';
       else if (grid[row][col] == 2)
         color = 'red';
-      cell.setAttribute('fill',color);
+      if (color !== 'white'){
+        cell.setAttribute('fill-opacity','1');
+        cell.setAttribute('fill',color);
+      }
+      else{
+        console.log(row+'-'+col);
+        cell.setAttribute('fill-opacity','0');
+      }
     }
   }
 }

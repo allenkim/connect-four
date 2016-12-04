@@ -4,12 +4,13 @@
 		<meta charset="utf-8">
 		<title> Connect Four </title>
 		<link href="style.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
 		<script src=connectFour.js defer></script>
 		<script src=bots.js defer></script>
 	</head>
 	<body>
 		<h1 class="center"> Connect Four </h1>
-		<h2 class="center" id="player_turn"> Player 1's Move </h3>
+		<h2 class="center" id="player_turn"> Player 1's Move </h2>
 		<div class="center" style="width:1200px; clear:both; margin: auto;">
 			<div style="width: 250px; float: left;">
 				<h3> Player 1 <h3>
@@ -27,8 +28,8 @@
 					<path d="M 100 0 L 0 0 0 100" fill="none" stroke="black" stroke-width="1"/>
 					</pattern>
 					</defs>
-
 					<rect width="100%" height="100%" stroke="#000000" fill="url(#grid)" />
+					<rect width="100%" height="100px" stroke="#ffffeeee">
 				</svg>
 			</div>
 			<div style="width: 250px; float: left;">
@@ -49,19 +50,29 @@
 		</div>
 		<script>
 			var boxSize = 100;
-			var height = document.getElementById('grid_div').offsetHeight;
+			var height = document.getElementById('grid_div').offsetHeight - boxSize;
 			var width = document.getElementById('grid_div').offsetWidth;
 			var svg = document.getElementById('grid');
-
+			// Initialize drop circles on top
+			for (var col = 0; col < width; col += boxSize){
+				var cell = document.createElementNS("http://www.w3.org/2000/svg",'circle');
+				cell.setAttribute('id','drop'+'-'+col/boxSize);
+				cell.setAttribute('class','.drop');
+				cell.setAttribute('cx',col+(boxSize/2));
+				cell.setAttribute('cy',boxSize/2);
+				cell.setAttribute('r',boxSize/2 - 1);
+				cell.setAttribute('fill-opacity','0');
+				svg.appendChild(cell);
+			}
 			// Initialize the grid on the browser with circles that are white initally
 			for (var row = 0; row < height; row += boxSize){
 				for (var col = 0; col < width; col += boxSize){
 					var cell = document.createElementNS("http://www.w3.org/2000/svg",'circle');
 					cell.setAttribute('id',row/boxSize+'-'+col/boxSize);
 					cell.setAttribute('cx',col+(boxSize/2));
-					cell.setAttribute('cy',row+(boxSize/2));
+					cell.setAttribute('cy',row+boxSize+(boxSize/2));
 					cell.setAttribute('r',boxSize/2 - 1);
-          cell.setAttribute('fill','white');
+          cell.setAttribute('fill-opacity','0');
 					svg.appendChild(cell);
 				}
 			}
@@ -76,6 +87,7 @@
 				button.setAttribute('onclick','makeMove(' + col + ')');
 				button_div.appendChild(button);
 			}
+
 		</script>
 	</body>
 </html>
