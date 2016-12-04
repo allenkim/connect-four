@@ -41,7 +41,7 @@ bots["Basic_Bot"] = function(){
   }
   while (!gameOver){
     var col = Math.floor(Math.random() * 7);
-    if (moveRow(col) != -1)
+    if (moveRow(col) !== -1)
       return col;
   }
 }
@@ -98,21 +98,44 @@ function numWinningStates(player,grid){
 
 }
 
-function heuristic(row,col,grid){
+// returns if grid is winning state for the player
+// eseentially checking if grid contains a 4-in-a-row for the player
+function winningState(player,grid){
+  // TODO: implement this
+}
 
-  if (playerWon(row,col,1,grid))
+function heuristic(row,col,grid){
+  if (winningState(1,grid))
     return Infinity;
 
-  if (playerWon(row,col,2,grid))
+  if (winningState(2,grid))
     return -Infinity;
 
   // Number of ways player 1 can win - number of ways player 2 can win
+  return numWinningStates(1,grid) - numWinningStates(2,grid);
+}
 
+function copyGrid(grid){
+  var copyGrid = [];
+  for (var row = 0; row < height; row++){
+    copyGrid.push([]);
+    for (var col = 0; col < width; col++)
+      // 0 means empty, 1 means first player (yellow), 2 means second player (red)
+      copyGrid[row][col] = grid[row][col];
+  }
+  return copyGrid;
+}
+
+// returns best move with heuristic
+function minimax(move, depth, player){
+  // TODO: Implement minimax
+  // move should be {grid: new grid state, value: heuristic}?
 }
 
 // Player 1 is max, player 2 is min
 bots["Minimax_Bot"] = function(){
-
+  //var move = minimax(copyGrid(grid), 5, playerTurn);
+  //return move.col;
 }
 
 var player_options = document.getElementsByClassName("player_options");
