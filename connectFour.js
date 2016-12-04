@@ -210,7 +210,7 @@ function makeMove(col,isBot){
       var drop = document.getElementById('drop-'+col);
       drop.setAttribute("fill-opacity",1);
       drop.setAttribute("fill",playerTurn===1?"yellow":"red");
-      TweenLite.to(drop, 2, {x:0, y:(row+1)*100, ease: Elastic.easeIn, onComplete: function(){
+      TweenLite.to(drop, 0.5, {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         playerTurn = 3 - playerTurn; // toggles between player 1 and 2
         document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
         makeBotMove();
