@@ -204,13 +204,14 @@ function makeMove(col,isBot){
       }
       game_end.style.display = 'block';
       gameOver = true;
+      makingMove = false;
       drawGrid();
     }
     else{
       var drop = document.getElementById('drop-'+col);
       drop.setAttribute("fill-opacity",1);
       drop.setAttribute("fill",playerTurn===1?"yellow":"red");
-      TweenLite.to(drop, 2, {x:0, y:(row+1)*100, ease: Elastic.easeIn, onComplete: function(){
+      TweenLite.to(drop, 0.5, {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         playerTurn = 3 - playerTurn; // toggles between player 1 and 2
         document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
         makeBotMove();
@@ -228,6 +229,11 @@ function makeMove(col,isBot){
  * Also resets the player turn to 1 and sets gameOver to false
  */
 function resetGrid(){
+  for (var col = 0; col < width; col++){
+    var drop = document.getElementById('drop-'+col);
+    drop.setAttribute('style','');
+    drop.setAttribute('fill-opacity','0');
+  }
   document.getElementById('game_end').style.display = 'none';
   playerTurn = 1;
   moveNumber = 1;
@@ -261,7 +267,6 @@ function drawGrid(){
         cell.setAttribute('fill',color);
       }
       else{
-        console.log(row+'-'+col);
         cell.setAttribute('fill-opacity','0');
       }
     }
