@@ -96,6 +96,67 @@ function numWinningStates(player,grid){
     new Point(0, 3)
   ];
 
+  for (var i = 0; i < topLeftCoordinates.length; i++) {
+    var point = topLeftCoordinates[i];
+    var row, tempRow, col, tempCol;
+
+    row = tempRow = point.row;
+    col = tempCol = point.col;
+
+    // Only do the check if there are 4 available spaces ahead
+    while (grid[row + 3] !== undefined) {
+      if (grid[row + 3][col + 3] === undefined)
+        break;
+      // Check the next four points, if the other player has a piece at the point
+      // then break out of the loop
+      for (var j = 0; j < 4; j++) {
+        if (grid[tempRow][tempCol] === otherPlayer) {
+          totalWinningStates--;
+          break;
+        }
+        tempRow++;
+        tempCol++;
+      }
+      // Move onto the next point in the diagonal to check
+      row++;
+      col++;
+    }
+  }
+
+  // Check from top right to bottom left
+  // Below are the first 6 points to start
+  var topRightCoordinates = [
+    new Point(0, 3),
+    new Point(0, 4),
+    new Point(0, 5),
+    new Point(0, 6),
+    new Point(1, 6),
+    new Point(2, 6)
+  ]
+
+  for (var i = 0; i < topRightCoordinates.length; i++) {
+    var point = topRightCoordinates[i];
+    var row, tempRow, col, tempCol;
+
+    row = tempRow = point.row;
+    col = tempCol = point.col;
+
+    while (grid[row + 3] !== undefined) {
+      if (grid[row + 3][col + 3] === undefined)
+        break;
+      for (var j = 0; j < 4; j++) {
+        if (grid[tempRow][tempCol] === otherPlayer) {
+          totalWinningStates--;
+          break;
+        }
+        tempRow++;
+        tempCol--;
+      }
+    }
+
+    row++;
+    col--;
+  }
 }
 
 // returns if grid is winning state for the player
