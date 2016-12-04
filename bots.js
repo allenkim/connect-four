@@ -71,7 +71,7 @@ function numWinningStates(player,grid){
     }
   }
 
-  console.log("After rows: " + totalWinningStates);
+  // console.log("After rows: " + totalWinningStates);
 
   // Check each column
   for (var col = 0; col < width; col++) {
@@ -85,7 +85,7 @@ function numWinningStates(player,grid){
     }
   }
 
-  console.log("After cols: " + totalWinningStates);
+  // console.log("After cols: " + totalWinningStates);
 
   // Check from top left to bottom right
   // Below are the first 6 points to start
@@ -170,50 +170,47 @@ function numWinningStates(player,grid){
 function winningState(player,grid){
   // Check the column, only need to check rows 0 to 2
   // If there is a winning state return true
-  for (var row = 0; row < height / 2; row++) {
-    for (var col = 0; col < width; col++) {
+  for (var col = 0; col < width; col++) {
+    for (var row = 0; row < height - 3; row++) {
       // If the point is not the player, don't bother checking
       if (grid[row][col] !== player)
-      continue;
+        continue;
       else {
         var count = 0;
-        var tempRow = row; // Refer to the current row
+        // Check the next 4 slots
         for (var i = 0; i < 4; i++) {
-          if (grid[tempRow][col] === player) {
-            count++;
-            if (count >= 4) {
-              console.log("Checking rows, Count: " + count)
-              return true;
-            }
-          }
-          else
+          if (grid[row][col] !== player) {
             break;
+          }
+          else {
+            row++;
+            count++;
+          }
         }
+        if (count === 4) { return true; }
       }
     }
   }
 
   // Check the rows, only need to check columns 0 to 3
   // If there are any winning states then return true
-  for (var col = 0; col < Math.floor(width / 2); col++) {
-    for (var row = 0; row < height; row++) {
+  for (var row = 0; row < height; row++) {
+    for (var col = 0; col < width - 3; col++) {
       if (grid[row][col] !== player) {
         continue;
       }
       else {
         var count = 0;
-        var tempCol = col; // Refer to the current col
         for (var i = 0; i < 4; i++) {
-          if (grid[row][tempCol] === player) {
-            count++;
-            if (count >= 4) {
-              console.log("Checking columns, Count: " + count)
-              return true;
-            }
-          }
-          else
+          if (grid[row][col] !== player) {
             break;
+          }
+          else {
+            col++;
+            count++;
+          }
         }
+        if (count == 4) { return true; }
       }
     }
   }
@@ -277,11 +274,14 @@ function winningState(player,grid){
       var point = topRightCoordinates[i];
       var row, tempRow, col, tempCol;
 
+      row = tempRow = point.row;
+      col = tempCol = point.col;
+
       while (grid[row + 3] !== undefined) {
-        if (grid[row + 3][col + 3] === undefined)
+        if (grid[row + 3][col - 3] === undefined)
           break;
-        row = tempRow = point.row;
-        col = tempCol = point.col;
+        tempRow = row;
+        tempCol = col;
         var count = 0;
         for (var j = 0; j < 4; j++) {
           if (grid[tempRow][tempCol] === player) {
