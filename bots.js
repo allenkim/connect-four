@@ -1,17 +1,17 @@
 /* Variables to keep in mind
- * grid: 2D array of the state of the game
- * playerTurn: number of current player
- * height: height of the grid
- * width: width of the grid
- */
+* grid: 2D array of the state of the game
+* playerTurn: number of current player
+* height: height of the grid
+* width: width of the grid
+*/
 
- /*
-  * Helper Functions:
-  * moveRow(col): returns the row that would be played if col is played
-  *               if col is full, returns -1
-  * playerWon(row,col,color): returns if player wins by playing color on the
-  *                           specified row, column
-  */
+/*
+* Helper Functions:
+* moveRow(col): returns the row that would be played if col is played
+*               if col is full, returns -1
+* playerWon(row,col,color): returns if player wins by playing color on the
+*                           specified row, column
+*/
 
 // All bots computes the column it will make its next move in
 
@@ -20,7 +20,7 @@ bots["Pure_Random_Bot"] = function(){
   while (!gameOver){
     var col = Math.floor(Math.random() * 7);
     if (moveRow(col))
-      return col;
+    return col;
   }
 }
 
@@ -42,7 +42,7 @@ bots["Basic_Bot"] = function(){
   while (!gameOver){
     var col = Math.floor(Math.random() * 7);
     if (moveRow(col) !== -1)
-      return col;
+    return col;
   }
 }
 
@@ -106,7 +106,7 @@ function numWinningStates(player,grid){
     // Only do the check if there are 4 available spaces ahead
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
-        break;
+      break;
       // Check the next four points, if the other player has a piece at the point
       // then break out of the loop
       for (var j = 0; j < 4; j++) {
@@ -143,7 +143,7 @@ function numWinningStates(player,grid){
 
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
-        break;
+      break;
       for (var j = 0; j < 4; j++) {
         if (grid[tempRow][tempCol] === otherPlayer) {
           totalWinningStates--;
@@ -166,36 +166,56 @@ function winningState(player,grid){
   // Check the column, only need to check rows 0 to 2
   // If there is a winning state return true
   for (var row = 0; row < height / 2; row++) {
-    for (var col = 0; col < width; width++) {
+    for (var col = 0; col < width; col++) {
       // If the point is not the player, don't bother checking
+      if (grid[row][col] !== player)
+      continue;
+      else {
+        var count = 0;
+        var tempRow = row; // Refer to the current row
+        for (var i = 0; i < 4; i++) {
+          if (grid[tempRow][col] === player)
+            count++;
+          else
+            break;
+          if (count >= 4)
+            return true;
+        }
+      }
+    }
+  }
+
+  // Check the rows, only need to check columns 0 to 3
+  // If there are any winning states then return true
+  for (var col = 0; col < Math.floor(width / 2); col++) {
+    for (var row = 0; row < height; row++) {
       if (grid[row][col] !== player) {
         continue;
       }
       else {
         var count = 0;
-        var tempRow = row;
+        var tempCol = col; // Refer to the current col
         for (var i = 0; i < 4; i++) {
-          if (grid[tempRow][col] === player) {
+          if (grid[row][tempCol] === player)
             count++;
-          }
-          else {
+          else
             break;
-          }
-          if (count >= 4) {
+          if (count >= 4)
             return true;
-          }
         }
       }
     }
   }
+
+  
 }
 
 function heuristic(row,col,grid){
   if (winningState(1,grid))
-    return Infinity;
+  return Infinity;
 
   if (winningState(2,grid))
-    return -Infinity;
+  return -Infinity;
 
   // Number of ways player 1 can win - number of ways player 2 can win
   return numWinningStates(1,grid) - numWinningStates(2,grid);
@@ -206,8 +226,8 @@ function copyGrid(grid){
   for (var row = 0; row < height; row++){
     copyGrid.push([]);
     for (var col = 0; col < width; col++)
-      // 0 means empty, 1 means first player (yellow), 2 means second player (red)
-      copyGrid[row][col] = grid[row][col];
+    // 0 means empty, 1 means first player (yellow), 2 means second player (red)
+    copyGrid[row][col] = grid[row][col];
   }
   return copyGrid;
 }
@@ -228,7 +248,7 @@ var player_options = document.getElementsByClassName("player_options");
 for (var i = 1; i <= 2; i++){
   for (var bot in bots){
     if (!bots.hasOwnProperty(bot))
-      continue;
+    continue;
     var id = bot+'_'+i;
     var button_div = document.createElement('div');
     button_div.setAttribute('class','left_align');
