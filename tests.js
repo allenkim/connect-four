@@ -1,5 +1,4 @@
 QUnit.test( "Test numWinningStates", function( assert ) {
-  var totalWinningStates = 4*6 + 3*7 + 24;
   var grid = [
     [0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0],
@@ -36,6 +35,19 @@ QUnit.test( "Test numWinningStates", function( assert ) {
   assert.equal(numWinningStates(1,grid), totalWinningStates - 7);
   // Test #6
   assert.equal(numWinningStates(2,grid), totalWinningStates);
+
+  grid = [
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [2,2,2,0,1,1,1]
+  ];
+  // Test #7
+  assert.equal(numWinningStates(1,grid), totalWinningStates - 9);
+  // Test #8
+  assert.equal(numWinningStates(2,grid), totalWinningStates - 9);
 });
 
 QUnit.test( "Test winningState", function( assert ) {
@@ -107,10 +119,10 @@ QUnit.test( "Test winningState", function( assert ) {
   grid = [
     [0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,1],
-    [0,0,0,0,1,2,1],
-    [0,2,2,1,2,2,1],
-    [1,1,1,2,2,2,1]
+    [1,0,0,0,0,0,0],
+    [2,1,0,0,1,2,1],
+    [2,2,1,1,2,2,1],
+    [1,1,1,1,2,2,1]
   ];
   // Test #11
   assert.equal(winningState(1,grid), true);
