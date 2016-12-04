@@ -98,13 +98,14 @@ function numWinningStates(player,grid){
     var point = topLeftCoordinates[i];
     var row, tempRow, col, tempCol;
 
-    row = tempRow = point.row;
-    col = tempCol = point.col;
+
 
     // Only do the check if there are 4 available spaces ahead
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
         break;
+      row = tempRow = point.row;
+      col = tempCol = point.col;
       // Check the next four points, if the other player has a piece at the point
       // then break out of the loop
       for (var j = 0; j < 4; j++) {
@@ -119,6 +120,8 @@ function numWinningStates(player,grid){
       row++;
       col++;
     }
+
+    return totalWinningStates;
   }
 
   // Check from top right to bottom left
@@ -136,12 +139,13 @@ function numWinningStates(player,grid){
     var point = topRightCoordinates[i];
     var row, tempRow, col, tempCol;
 
-    row = tempRow = point.row;
-    col = tempCol = point.col;
+
 
     while (grid[row + 3] !== undefined) {
       if (grid[row + 3][col + 3] === undefined)
         break;
+      row = tempRow = point.row;
+      col = tempCol = point.col;
       for (var j = 0; j < 4; j++) {
         if (grid[tempRow][tempCol] === otherPlayer) {
           totalWinningStates--;
@@ -151,7 +155,6 @@ function numWinningStates(player,grid){
         tempCol--;
       }
     }
-
     row++;
     col--;
   }
@@ -225,13 +228,14 @@ function winningState(player,grid){
     var point = topLeftCoordinates[i];
     var row, tempRow, col, tempCol;
 
-    row = tempRow = point.row;
-    col = tempCol = point.col;
+
 
     // Check if the fourth space ahead exists
     while (grid[row + 3] !== undefined) {
       if (grid[row][col] === undefined)
         break;
+      row = tempRow = point.row;
+      col = tempCol = point.col;
       var count = 0;
       // Check if the next 4 is the winning move
       for (var j = 0; j < 4; j++) {
@@ -268,12 +272,11 @@ function winningState(player,grid){
       var point = topRightCoordinates[i];
       var row, tempRow, col, tempCol;
 
-      row = tempRow = point.row;
-      col = tempCol = point.col;
-
       while (grid[row + 3] !== undefined) {
         if (grid[row + 3][col + 3] === undefined)
           break;
+        row = tempRow = point.row;
+        col = tempCol = point.col;
         var count = 0;
         for (var j = 0; j < 4; j++) {
           if (grid[tempRow][tempCol] === player) {
