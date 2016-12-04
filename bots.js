@@ -348,7 +348,7 @@ var player_options = document.getElementsByClassName("player_options");
 for (var i = 1; i <= 2; i++){
   for (var bot in bots){
     if (!bots.hasOwnProperty(bot))
-    continue;
+      continue;
     var id = bot+'_'+i;
     var button_div = document.createElement('div');
     button_div.setAttribute('class','left_align');
