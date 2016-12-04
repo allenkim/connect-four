@@ -163,6 +163,31 @@ function numWinningStates(player,grid){
 // eseentially checking if grid contains a 4-in-a-row for the player
 function winningState(player,grid){
   // TODO: implement this
+  // Check the column, only need to check rows 0 to 2
+  // If there is a winning state return true
+  for (var row = 0; row < height / 2; row++) {
+    for (var col = 0; col < width; width++) {
+      // If the point is not the player, don't bother checking
+      if (grid[row][col] !== player) {
+        continue;
+      }
+      else {
+        var count = 0;
+        var tempRow = row;
+        for (var i = 0; i < 4; i++) {
+          if (grid[tempRow][col] === player) {
+            count++;
+          }
+          else {
+            break;
+          }
+          if (count >= 4) {
+            return true;
+          }
+        }
+      }
+    }
+  }
 }
 
 function heuristic(row,col,grid){
