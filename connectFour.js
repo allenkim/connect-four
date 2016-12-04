@@ -204,6 +204,7 @@ function makeMove(col,isBot){
       }
       game_end.style.display = 'block';
       gameOver = true;
+      makingMove = false;
       drawGrid();
     }
     else{
@@ -228,6 +229,11 @@ function makeMove(col,isBot){
  * Also resets the player turn to 1 and sets gameOver to false
  */
 function resetGrid(){
+  for (var col = 0; col < width; col++){
+    var drop = document.getElementById('drop-'+col);
+    drop.setAttribute('style','');
+    drop.setAttribute('fill-opacity','0');
+  }
   document.getElementById('game_end').style.display = 'none';
   playerTurn = 1;
   moveNumber = 1;
