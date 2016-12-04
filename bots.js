@@ -170,8 +170,10 @@ function numWinningStates(player,grid){
 function winningState(player,grid){
   // Check the column, only need to check rows 0 to 2
   // If there is a winning state return true
+  // console.log(grid);
   for (var col = 0; col < width; col++) {
     for (var row = 0; row < height - 3; row++) {
+      // console.log("row : " + row + " col: " + col);
       // If the point is not the player, don't bother checking
       if (grid[row][col] !== player)
         continue;
@@ -342,8 +344,10 @@ var minimaxCol;
 function minimax(grid, depth, player){
   // TODO: Implement minimax
   // move should be {grid: new grid state, column : number}?
-  if (depth === 0 || isGridFull(grid)) {
-    return heuristic(grid);
+  if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
+    var value = heuristic(grid);
+    // console.log("Depth: ", depth, " Player: ", player, " heuristic: ", value);
+    return value;
   }
 
   // Max's turn
