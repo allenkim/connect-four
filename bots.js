@@ -47,11 +47,9 @@ bots["Basic_Bot"] = function(){
 }
 
 // Custom Object with a constructor
-class Point {
-  constructor(row, col) {
-    this.row = row;
-    this.col = col;
-  }
+var Point = function(row,col){
+  this.row = row;
+  this.col = col;
 }
 
 // player is either 1 or 2
