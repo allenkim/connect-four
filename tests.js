@@ -1,4 +1,5 @@
 QUnit.test( "Test numWinningStates", function( assert ) {
+  var totalWinningStates = 69;
   var grid = [
     [0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0],
