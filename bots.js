@@ -19,7 +19,7 @@
 bots["Pure_Random_Bot"] = function(){
   while (!gameOver){
     var col = Math.floor(Math.random() * 7);
-    if (moveRow(col))
+    if (moveRow(col,grid))
     return col;
   }
 }
@@ -28,20 +28,20 @@ bots["Pure_Random_Bot"] = function(){
 // Otherwise, it plays randomly
 bots["Basic_Bot"] = function(){
   for (var col = 0; col < width; col++){
-    var row = moveRow(col);
+    var row = moveRow(col,grid);
     if (row !== -1 && playerWon(row,col,playerTurn,grid)){
       return col;
     }
   }
   for (var col = 0; col < width; col++){
-    var row = moveRow(col);
+    var row = moveRow(col,grid);
     if (row !== -1 && playerWon(row,col,3-playerTurn,grid)){
       return col;
     }
   }
   while (!gameOver){
     var col = Math.floor(Math.random() * 7);
-    if (moveRow(col) !== -1)
+    if (moveRow(col,grid) !== -1)
     return col;
   }
 }
@@ -335,27 +335,20 @@ function copyGrid(grid){
 }
 
 // Deepest check for our state space graph
-var maxDepth = 2;
-
-// Best position to play that will most likely win for the Minimax_Bot
-var minimaxCol;
+var maxDepth = 5;
 
 // returns best move with heuristic
 function minimax(grid, depth, player){
-  // TODO: Implement minimax
-  // move should be {grid: new grid state, column : number}?
   if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
     var value = heuristic(grid);
     return value;
   }
-  // Always initialize minimaxCol with the first possible column it can play
-  if (depth === maxDepth){
-    for (var col = 0; col < width; col++){
-      var row = moveRow(col);
-      if (row !== -1){
-        minimaxCol = col;
-        break;
-      }
+  var bestColumn = 0;
+  for (var col = 0; col  < width; col++){
+    var row = moveRow(col,grid);
+    if (row !== -1){
+      bestColumn = col;
+      break;
     }
   }
   // Max's turn
@@ -363,7 +356,7 @@ function minimax(grid, depth, player){
     var bestValue = -Infinity;
     for (var col = 0; col < width; col++) {
       // Stores the row position if played at the column
-      var row = moveRow(col);
+      var row = moveRow(col,grid);
       // if it's a valid move
       if (row !== -1) {
         var copiedGrid = copyGrid(grid);
@@ -372,12 +365,13 @@ function minimax(grid, depth, player){
         var currentValue = minimax(copiedGrid, depth - 1, 2);
         if (currentValue > bestValue) {
           bestValue = currentValue;
-          if (depth === maxDepth) {
-            minimaxCol = col;
-          }
+          bestColumn = col;
         }
       }
     }
+    if (depth === maxDepth)
+      return bestColumn;
+
     return bestValue;
   }
   // Min's turn
@@ -385,7 +379,7 @@ function minimax(grid, depth, player){
     var bestValue = Infinity;
     for (var col = 0; col < width; col++) {
       // Stores the row position if played at the column
-      var row = moveRow(col);
+      var row = moveRow(col,grid);
       // if it's a valid move
       if (row !== -1) {
         var copiedGrid = copyGrid(grid);
@@ -394,12 +388,13 @@ function minimax(grid, depth, player){
         var currentValue = minimax(copiedGrid, depth - 1, 1);
         if (currentValue < bestValue) {
           bestValue = currentValue;
-          if (depth === maxDepth) {
-            minimaxCol = col;
-          }
+          bestColumn = col;
         }
       }
     }
+    if (depth === maxDepth)
+      return bestColumn;
+
     return bestValue;
   }
 }
@@ -417,8 +412,7 @@ function isGridFull(grid) {
 
 // Player 1 is max, player 2 is min
 bots["Minimax_Bot"] = function(){
-  minimax(copyGrid(grid), maxDepth, playerTurn);
-  return minimaxCol;
+  return minimax(copyGrid(grid), maxDepth, playerTurn);
 }
 
 var player_options = document.getElementsByClassName("player_options");

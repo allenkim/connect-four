@@ -167,7 +167,7 @@ function playerWon(row,col,currentColor,grid){
  * Checks if move is possible in the column
  * Returns the row it is placed in or -1 if not possible
  */
-function moveRow(col){
+function moveRow(col, grid){
   for (var row = height - 1; row >= 0; row--){
     if (!grid[row][col])
       return row;
@@ -191,7 +191,7 @@ function makeMove(col,isBot){
     return false;
 
   // we check from the bottom up to see if a move can be played
-  var row = moveRow(col);
+  var row = moveRow(col,grid);
   if (row !== -1){
     makingMove = true;
     grid[row][col] = playerTurn;
