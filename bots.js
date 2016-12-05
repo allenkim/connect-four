@@ -320,7 +320,7 @@ function heuristic(grid){
     return -Infinity;
 
   // Number of ways player 1 can win - number of ways player 2 can win
-  return numWinningStates(1,grid) - numWinningStates(2,grid);
+  return numWinningStates(1,grid) - numWinningStates(2,grid) + (Math.random()-0.5)*0.001;
 }
 
 function copyGrid(grid){
@@ -340,8 +340,7 @@ var maxDepth = 5;
 // returns best move with heuristic
 function minimax(grid, depth, player){
   if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
-    var value = heuristic(grid);
-    return value;
+    return heuristic(grid);
   }
   var bestColumn = 0;
   for (var col = 0; col  < width; col++){
