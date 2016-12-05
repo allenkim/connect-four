@@ -335,7 +335,7 @@ function copyGrid(grid){
 }
 
 // Deepest check for our state space graph
-var maxDepth = 3;
+var maxDepth = 2;
 
 // Best position to play that will most likely win for the Minimax_Bot
 var minimaxCol;
@@ -346,10 +346,18 @@ function minimax(grid, depth, player){
   // move should be {grid: new grid state, column : number}?
   if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
     var value = heuristic(grid);
-    // console.log("Depth: ", depth, " Player: ", player, " heuristic: ", value);
     return value;
   }
-
+  // Always initialize minimaxCol with the first possible column it can play
+  if (depth === maxDepth){
+    for (var col = 0; col < width; col++){
+      var row = moveRow(col);
+      if (row !== -1){
+        minimaxCol = col;
+        break;
+      }
+    }
+  }
   // Max's turn
   if (player === 1) {
     var bestValue = -Infinity;

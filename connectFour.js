@@ -201,8 +201,9 @@ function makeMove(col,isBot){
     if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
       TweenLite.to(drop, 0.08*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         var game_end = document.getElementById('game_end');
-        if (moveNumber === width*height)
+        if (moveNumber >= width*height){
           game_end.childNodes[1].innerHTML = "Draw!";
+        }
         else{
           game_end.childNodes[1].innerHTML = "Player " + playerTurn + " wins!";
         }
