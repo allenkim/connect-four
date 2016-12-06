@@ -49,6 +49,19 @@ QUnit.test( "Test numWinningStates", function( assert ) {
   assert.equal(numWinningStates(1,grid), totalWinningStates - 9);
   // Test #8
   assert.equal(numWinningStates(2,grid), totalWinningStates - 9);
+
+  grid = [
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,1,0,0,0],
+    [0,0,0,2,1,0,0],
+    [0,0,0,2,2,1,0],
+    [2,0,0,2,2,1,1]
+  ];
+  // Test #9
+  assert.equal(numWinningStates(1,grid), totalWinningStates - 12 - 6 - 7 - 6);
+  // Test #10
+  assert.equal(numWinningStates(2,grid), totalWinningStates - 11 - 9 - 5 - 4);
 });
 
 QUnit.test( "Test winningState", function( assert ) {
