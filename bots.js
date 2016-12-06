@@ -1,9 +1,13 @@
 // All bots computes the column it will make its next move in
 
+// Object of all different bots made
+var bots = {}
+
 // Basic bot that will randomly choose an available column
-bots["Pure_Random_Bot"] = function(){
+bots["Pure_Random_Bot"] = function(grid){
+  var width = grid[0].length;
   while (!gameOver){
-    var col = Math.floor(Math.random() * 7);
+    var col = Math.floor(Math.random() * width);
     if (moveRow(col,grid))
     return col;
   }
@@ -11,7 +15,8 @@ bots["Pure_Random_Bot"] = function(){
 
 // Basic bot that will win when possible or block if enemy is going to win
 // Otherwise, it plays randomly
-bots["Basic_Bot"] = function(){
+bots["Basic_Bot"] = function(grid){
+  var width = grid[0].length;
   for (var col = 0; col < width; col++){
     var row = moveRow(col,grid);
     if (row !== -1 && playerWon(row,col,playerTurn,grid)){
@@ -45,6 +50,7 @@ function heuristic(grid){
 
 // returns best move with heuristic
 function minimax(grid, depth, player){
+  var width = grid[0].length;
   if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
     return heuristic(grid);
   }
@@ -108,12 +114,13 @@ function minimax(grid, depth, player){
 var minimaxDepth = 5;
 
 // Player 1 is max, player 2 is min
-bots["Minimax_Bot"] = function(){
+bots["Minimax_Bot"] = function(grid){
   return minimax(copyGrid(grid), minimaxDepth, playerTurn);
 }
 
 // returns best move with heuristic
 function alphabeta(grid, depth, alpha, beta, player){
+  var width = grid[0].length;
   if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
     return heuristic(grid);
   }
@@ -183,6 +190,6 @@ function alphabeta(grid, depth, alpha, beta, player){
 var alphabetaDepth = 6;
 
 // Player 1 is max, player 2 is min
-bots["AlphaBeta_Bot"] = function(){
+bots["AlphaBeta_Bot"] = function(grid){
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn);
 }

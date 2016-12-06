@@ -34,9 +34,6 @@ document.getElementById("human_2").onclick = function() {
   players[2] = "Human";
 };
 
-var bots = {}
-// Object of all different bots made
-
 /*
  * makeBotMove makes a move for the bot
  */
@@ -48,7 +45,7 @@ function makeBotMove(){
     botThinking = false;
     makeBotMove();
   },botDelay)
-  var col = bots[players[playerTurn]]();
+  var col = bots[players[playerTurn]](grid);
   makeMove(col,true);
 }
 
@@ -78,7 +75,7 @@ function makeMove(col,isBot){
     if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
       TweenLite.to(drop, 0.08*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         var game_end = document.getElementById('game_end');
-        if (moveNumber >= width*height){
+        if (moveNumber > width*height){
           game_end.childNodes[1].innerHTML = "Draw!";
         }
         else{
