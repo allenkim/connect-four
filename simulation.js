@@ -64,7 +64,7 @@ function runSimulations(){
   var player1_Wins = 0;
   var player2_Wins = 0;
   var draws = 0;
-  for (var i = 0; i < NUMBER_SIMULATIONS; i++){
+  for (var i = 1; i <= NUMBER_SIMULATIONS; i++){
     var winningPlayer = simulateGame();
     if (winningPlayer === 1)
       player1_Wins++;
@@ -72,6 +72,7 @@ function runSimulations(){
       player2_Wins++;
     else
       draws++;
+    console.log(i + " simulations run...");
   }
   var results = [
     ["Players","Number of Wins","Number of Losses","Draws"],
