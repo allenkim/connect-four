@@ -444,7 +444,7 @@ function winningState(player,grid){
 
     // Check if the fourth space ahead exists
     while (grid[row + 3] !== undefined) {
-      if (grid[row][col] === undefined)
+      if (grid[row + 3][col + 3] === undefined)
         break;
       tempRow = row;
       tempCol = col;
