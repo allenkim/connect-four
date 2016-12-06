@@ -455,68 +455,56 @@ function winningState(player,grid){
           count++;
           tempRow++;
           tempCol++;
-          if (count >= 4) {
-            // TODO: Check if this screws up
-            // console.log("Top Left -> Bottom Right Count: " + count);
-            return true;
-          }
+          if (count >= 4) { return true; }
         }
-        else {
-          break;
-        }
+        else { break; }
       }
       row++;
       col++;
     }
-
-    // Check from the top right to bottom left
-    var topRightCoordinates = [
-      new Point(0, 3),
-      new Point(0, 4),
-      new Point(0, 5),
-      new Point(0, 6),
-      new Point(1, 6),
-      new Point(2, 6)
-    ];
-
-    // Go through all possible top right coordinates
-    for (var i = 0; i < topRightCoordinates.length; i++) {
-      var point = topRightCoordinates[i];
-      var row, tempRow, col, tempCol;
-
-      row = tempRow = point.row;
-      col = tempCol = point.col;
-
-      while (grid[row + 3] !== undefined) {
-        if (grid[row + 3][col - 3] === undefined)
-          break;
-        tempRow = row;
-        tempCol = col;
-        var count = 0;
-        for (var j = 0; j < 4; j++) {
-          if (grid[tempRow][tempCol] === player) {
-            count++;
-            tempRow++
-            tempCol--;
-            if (count >= 4) {
-              // TODO: Check if this screws up
-              // console.log("Top Right -> Bottom left Count: " + count);
-              return true;
-            }
-          }
-          else {
-            break;
-          }
-        }
-        row++;
-        col--;
-      }
-    }
-
-    // After checking all of the cases, we determine that this board is not
-    // a winning board
-    return false;
   }
+
+  // Check from the top right to bottom left
+  var topRightCoordinates = [
+    new Point(0, 3),
+    new Point(0, 4),
+    new Point(0, 5),
+    new Point(0, 6),
+    new Point(1, 6),
+    new Point(2, 6)
+  ];
+
+  // Go through all possible top right coordinates
+  for (var i = 0; i < topRightCoordinates.length; i++) {
+    var point = topRightCoordinates[i];
+    var row, tempRow, col, tempCol;
+
+    row = tempRow = point.row;
+    col = tempCol = point.col;
+
+    while (grid[row + 3] !== undefined) {
+      if (grid[row + 3][col - 3] === undefined)
+        break;
+      tempRow = row;
+      tempCol = col;
+      var count = 0;
+      for (var j = 0; j < 4; j++) {
+        if (grid[tempRow][tempCol] === player) {
+          count++;
+          tempRow++
+          tempCol--;
+          if (count >= 4) { return true; }
+        }
+        else { break; }
+      }
+      row++;
+      col--;
+    }
+  }
+
+  // After checking all of the cases, we determine that this board is not
+  // a winning board
+  return false;
 }
 
 // Checks if the grid is full
