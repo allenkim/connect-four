@@ -38,8 +38,8 @@ function runSimulations(){
   var NUMBER_SIMULATIONS = document.getElementById("num_simulations").value;
   var results = [
     ["Players","Number of Wins","Number of Losses","Total"],
-    ["1 - " + players[1], 150, 100, NUMBER_SIMULATIONS],
-    ["2 - " + players[2], 50, 75, NUMBER_SIMULATIONS]
+    ["1st - " + players[1], 150, 100, NUMBER_SIMULATIONS],
+    ["2nd - " + players[2], 50, 75, NUMBER_SIMULATIONS]
   ];
   createTable(results);
 }

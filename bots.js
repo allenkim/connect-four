@@ -39,10 +39,10 @@ bots["Basic_Bot"] = function(grid){
 
 function heuristic(grid){
   if (winningState(1,grid))
-    return Infinity;
+    return 1000;
 
   if (winningState(2,grid))
-    return -Infinity;
+    return -1000;
 
   // Number of ways player 1 can win - number of ways player 2 can win
   return numWinningStates(1,grid) - numWinningStates(2,grid) + (Math.random()-0.5)*0.001;
@@ -52,7 +52,17 @@ function heuristic(grid){
 function minimax(grid, depth, player){
   var width = grid[0].length;
   if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
-    return heuristic(grid);
+    var maxWin = winningState(1,grid);
+    var minWin = winningState(2, grid);
+    var gridFull = isGridFull(grid);
+    if (depth === 0 || maxWin || minWin || gridFull) {
+      if (maxWin)
+        return 1000 + depth;
+      else if (minWin)
+        return -1000 - depth;
+      else
+        return heuristic(grid);
+    }
   }
   var bestColumn = 0;
   for (var col = 0; col  < width; col++){
@@ -121,8 +131,16 @@ bots["Minimax_Bot"] = function(grid){
 // returns best move with heuristic
 function alphabeta(grid, depth, alpha, beta, player){
   var width = grid[0].length;
-  if (depth === 0 || isGridFull(grid) || winningState(1, grid) || winningState(2, grid)) {
-    return heuristic(grid);
+  var maxWin = winningState(1,grid);
+  var minWin = winningState(2, grid);
+  var gridFull = isGridFull(grid);
+  if (depth === 0 || maxWin || minWin || gridFull) {
+    if (maxWin)
+      return 1000 + depth;
+    else if (minWin)
+      return -1000 - depth;
+    else
+      return heuristic(grid);
   }
   var bestColumn = 0;
   for (var col = 0; col  < width; col++){
