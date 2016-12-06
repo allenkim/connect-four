@@ -22,6 +22,19 @@ label {
   margin-left: 5px;
 }
 
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
 [type=radio]:checked ~ label {
     background: white;
     border-bottom: 4px solid gray;
