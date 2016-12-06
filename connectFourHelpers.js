@@ -382,15 +382,12 @@ function winningState(player,grid){
     for (var row = 0; row < height - 3; row++) {
       // console.log("row : " + row + " col: " + col);
       // If the point is not the player, don't bother checking
-      if (grid[row][col] !== player)
-        continue;
+      if (grid[row][col] !== player) { continue; }
       else {
         var count = 0;
         // Check the next 4 slots
         for (var i = 0; i < 4; i++) {
-          if (grid[row][col] !== player) {
-            break;
-          }
+          if (grid[row][col] !== player) { break; }
           else {
             row++;
             count++;
@@ -405,15 +402,11 @@ function winningState(player,grid){
   // If there are any winning states then return true
   for (var row = 0; row < height; row++) {
     for (var col = 0; col < width - 3; col++) {
-      if (grid[row][col] !== player) {
-        continue;
-      }
+      if (grid[row][col] !== player) { continue; }
       else {
         var count = 0;
         for (var i = 0; i < 4; i++) {
-          if (grid[row][col] !== player) {
-            break;
-          }
+          if (grid[row][col] !== player) { break; }
           else {
             col++;
             count++;
