@@ -128,8 +128,23 @@ bots["Minimax_Bot"] = function(grid){
   return minimax(copyGrid(grid), minimaxDepth, playerTurn);
 }
 
+function updatedHeuristic(grid){
+  if (winningState(1,grid))
+    return 1000;
+
+  if (winningState(2,grid))
+    return -1000;
+
+  // NUmber of three in a rows for player 1 - player 2
+  var threeHeuristic = numThreeInRow(1,grid) - numThreeInRow(2,grid);
+  // Number of ways player 1 can win - number of ways player 2 can win
+  var fourHeuristic = numWinningStates(1,grid) - numWinningStates(2,grid);
+
+  return threeHeuristic + fourHeuristic + (Math.random()-0.5)*0.001;
+}
+
 // returns best move with heuristic
-function alphabeta(grid, depth, alpha, beta, player){
+function alphabeta(grid, depth, alpha, beta, player, heuristic){
   var width = grid[0].length;
   var maxWin = winningState(1,grid);
   var minWin = winningState(2, grid);
@@ -139,8 +154,13 @@ function alphabeta(grid, depth, alpha, beta, player){
       return 1000 + depth;
     else if (minWin)
       return -1000 - depth;
-    else
-      return heuristic(grid);
+    else{
+      if (heuristic === 1)
+        return heuristic(grid);
+      else {
+        return updatedHeuristic(grid);
+      }
+    }
   }
   var bestColumn = 0;
   for (var col = 0; col  < width; col++){
@@ -209,5 +229,10 @@ var alphabetaDepth = 6;
 
 // Player 1 is max, player 2 is min
 bots["AlphaBeta_Bot"] = function(grid){
-  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn);
+  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, 1);
+}
+
+// Player 1 is max, player 2 is min
+bots["AlphaBeta_Bot_v2"] = function(grid){
+  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, 2);
 }

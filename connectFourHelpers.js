@@ -145,7 +145,7 @@ function copyGrid(grid){
 // player is either 1 or 2
 function numWinningStates(player,grid){
   // TODO: Find number of winning states for player given grid
-  var totalWinningStates = 4 * 6 + 3 * 7 + 24;
+  var totalWinningStates = 4 * 6 + 3 * 7 + 12 * 2;
   var otherPlayer = 3 - player;
 
   // Check each row
@@ -255,6 +255,122 @@ function numWinningStates(player,grid){
   return totalWinningStates;
 }
 
+// player is either 1 or 2
+function numThreeInRow(player,grid){
+  // TODO: Find number of three in a row states for player given grid
+  var totalThreeInRow = 5 * 6 + 4 * 7 + 20 * 2;
+  var otherPlayer = 3 - player;
+
+  // Check each row
+  for (var row = 0; row < height; row++) {
+    for (var col = 0; col <= width - 3; col++) {
+      for (var i = 0; i < 3; i++) {
+        // Refer to the other player we're looking at
+        if (grid[row][col + i] === otherPlayer) {
+          totalThreeInRow--;
+          break;
+        }
+      }
+    }
+  }
+
+  // console.log("After rows: " + totalWinningStates);
+
+  // Check each column
+  for (var col = 0; col < width; col++) {
+    for (var row = 0; row <= height - 3; row++) {
+      for (var i = 0; i < 3; i++) {
+        if (grid[row + i][col] === otherPlayer) {
+          totalThreeInRow--;
+          break;
+        }
+      }
+    }
+  }
+
+  // console.log("After cols: " + totalWinningStates);
+
+  // Check from top left to bottom right
+  // Below are the first 8 points to start
+  var topLeftCoordinates = [
+    new Point(3, 0),
+    new Point(2, 0),
+    new Point(1, 0),
+    new Point(0, 0),
+    new Point(0, 1),
+    new Point(0, 2),
+    new Point(0, 3),
+    new Point(0, 4)
+  ];
+
+  for (var i = 0; i < topLeftCoordinates.length; i++) {
+    var point = topLeftCoordinates[i];
+    var row, tempRow, col, tempCol;
+
+    row = tempRow = point.row;
+    col = tempCol = point.col;
+
+    // Only do the check if there are 3 available spaces ahead
+    while (grid[row + 2] !== undefined) {
+      if (grid[row + 2][col + 2] === undefined)
+        break;
+      tempRow = row;
+      tempCol = col;
+      // Check the next three points, if the other player has a piece at the point
+      // then break out of the loop
+      for (var j = 0; j < 3; j++) {
+        if (grid[tempRow][tempCol] === otherPlayer) {
+          totalThreeInRow--;
+          break;
+        }
+        tempRow++;
+        tempCol++;
+      }
+      // Move onto the next point in the diagonal to check
+      row++;
+      col++;
+    }
+  }
+
+  // Check from top right to bottom left
+  // Below are the first 8 points to start
+  var topRightCoordinates = [
+    new Point(0, 2),
+    new Point(0, 3),
+    new Point(0, 4),
+    new Point(0, 5),
+    new Point(0, 6),
+    new Point(1, 6),
+    new Point(2, 6),
+    new Point(3, 6)
+  ];
+
+  for (var i = 0; i < topRightCoordinates.length; i++) {
+    var point = topRightCoordinates[i];
+    var row, tempRow, col, tempCol;
+
+    row = tempRow = point.row;
+    col = tempCol = point.col;
+
+    while (grid[row + 2] !== undefined) {
+      if (grid[row + 2][col - 2] === undefined)
+        break;
+      tempRow = row;
+      tempCol = col;
+      for (var j = 0; j < 3; j++) {
+        if (grid[tempRow][tempCol] === otherPlayer) {
+          totalThreeInRow--;
+          break;
+        }
+        tempRow++;
+        tempCol--;
+      }
+      row++;
+      col--;
+    }
+  }
+  return totalThreeInRow;
+}
 
 // returns if grid is winning state for the player
 // eseentially checking if grid contains a 4-in-a-row for the player
