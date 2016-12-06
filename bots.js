@@ -6,7 +6,7 @@ var bots = {}
 // Basic bot that will randomly choose an available column
 bots["Pure_Random_Bot"] = function(grid){
   var width = grid[0].length;
-  while (!gameOver){
+  while (!isGridFull(grid)){
     var col = Math.floor(Math.random() * width);
     if (moveRow(col,grid))
     return col;
@@ -29,7 +29,7 @@ bots["Basic_Bot"] = function(grid){
       return col;
     }
   }
-  while (!gameOver){
+  while (!isGridFull(grid)){
     var col = Math.floor(Math.random() * 7);
     if (moveRow(col,grid) !== -1)
     return col;

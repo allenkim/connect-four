@@ -12,14 +12,12 @@
 				<h3> Player 1 <h3>
 				<form class="player_options">
 					<div class="left_align">
-	            <input type="radio" id="human_1" name="options_1" checked>
-	            <label for="human_1">Human</label>
 	        </div>
 				</form>
 			</div>
 			<div id="grid_div">
-        Number of Simulations (between 1 and 1000):
-        <input type="number" id="num_simulations" name="quantity" min="1" max="1000">
+        Number of Simulations (between 1 and 100):
+        <input type="number" id="num_simulations" name="quantity" min="1" max="100">
         <br><br>
         <input name="button"  type="button" onClick="runSimulations()" value="Run" />
         <br>
@@ -30,8 +28,6 @@
 				<h3> Player 2 <h3>
 				<form class="player_options">
 					<div class="left_align">
-	            <input type="radio" id="human_2" name="options_2" checked>
-	            <label for="human_2">Human</label>
 	        </div>
 				</form>
 			</div>
@@ -40,16 +36,14 @@
 			<p style="font-size: 30px"></p>
 			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
 		</div>
-		<script>
-			var playerTurn = 1;
-			var makingMove = false;
-			var players = [,"Human", "Human"]
-    </script>
 		<script src=connectFourHelpers.js></script>
 		<script src=bots.js></script>
 		<script defer>
+      var players = [,,];
+      var playerTurn = 1;
 			var player_options = document.getElementsByClassName("player_options");
 			for (var i = 1; i <= 2; i++){
+        var first = true;
 			  for (var bot in bots){
 			    if (!bots.hasOwnProperty(bot))
 			      continue;
@@ -60,6 +54,11 @@
 			    option.setAttribute('type','radio');
 			    option.setAttribute('id', id);
 			    option.setAttribute('name','options_'+i);
+          if (first){
+            players[i] = bot;
+            option.checked = true;
+            first = false;
+          }
 			    var label = document.createElement('label')
 			    label.setAttribute('for', id);
 			    label.innerHTML = bot;
