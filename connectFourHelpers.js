@@ -529,3 +529,15 @@ function isGridFull(grid) {
   }
   return true;
 }
+
+function numberThreats(player,grid){
+  var totalThreats = 0;
+  for (var col = 0; col < width; col++){
+    var row = moveRow(col,grid);
+    if (row > 0){
+      if (playerWon(row-1,col,player,grid))
+        totalThreats++;
+    }
+  }
+  return totalThreats;
+}

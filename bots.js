@@ -139,6 +139,8 @@ function updatedHeuristic(grid){
   var threeHeuristic = numThreeInRow(1,grid) - numThreeInRow(2,grid);
   // Number of ways player 1 can win - number of ways player 2 can win
   var fourHeuristic = numWinningStates(1,grid) - numWinningStates(2,grid);
+  // Number of threats
+  // var threatHeuristic = numberThreats(1,grid) - numberThreats(2,grid);
 
   return threeHeuristic + fourHeuristic + (Math.random()-0.5)*0.001;
 }
