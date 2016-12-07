@@ -62,6 +62,38 @@
 				cell.setAttribute('fill-opacity','0');
 				svg.appendChild(cell);
 			}
+			// Initialize clickable rectangle on top
+			for (var col = 0; col < width; col += boxSize){
+				var clickRect = document.createElementNS("http://www.w3.org/2000/svg",'rect');
+				var id = 'click-col-'+col/boxSize;
+				clickRect.setAttribute('id',id);
+				clickRect.setAttribute('width',boxSize);
+				clickRect.setAttribute('height',height+boxSize);
+				clickRect.setAttribute('x',col);
+				clickRect.setAttribute('y',0);
+				clickRect.setAttribute('fill-opacity','0');
+				svg.appendChild(clickRect);
+				(function(id,col){
+					document.getElementById(id).onmousemove = function() {
+						if (makingMove || players[playerTurn] !== "Human")
+							return;
+						for (var i = 0; i < width; i++){
+							var drop = document.getElementById('drop-'+i);
+							if (drop){
+								if (i === col){
+									drop.setAttribute("fill-opacity",1)
+									drop.setAttribute("fill",playerTurn===1?"yellow":"red");
+								}
+								else
+									drop.setAttribute("fill-opacity",0);
+							}
+						}
+					};
+					document.getElementById(id).onclick = function() {
+						makeMove(col);
+					};
+				})(id,col/boxSize);
+			}
 			// Initialize the grid on the browser with circles that are white initally
 			for (var row = 0; row < height; row += boxSize){
 				for (var col = 0; col < width; col += boxSize){
@@ -74,23 +106,25 @@
           cell.setAttribute('fill-opacity','0');
 					svg.appendChild(cell);
 					(function(id,col){
-			      document.getElementById(id).onmousemove = function() {
+						document.getElementById(id).onmousemove = function() {
 							if (makingMove || players[playerTurn] !== "Human")
 								return;
 							for (var i = 0; i < width; i++){
 								var drop = document.getElementById('drop-'+i);
-								if (i === col){
-									drop.setAttribute("fill-opacity",1)
-									drop.setAttribute("fill",playerTurn===1?"yellow":"red");
+								if (drop){
+									if (i === col){
+										drop.setAttribute("fill-opacity",1)
+										drop.setAttribute("fill",playerTurn===1?"yellow":"red");
+									}
+									else
+										drop.setAttribute("fill-opacity",0);
 								}
-								else
-									drop.setAttribute("fill-opacity",0);
 							}
-			      };
+						};
 						document.getElementById(id).onclick = function() {
 							makeMove(col);
-			      };
-			    })(id,col/boxSize);
+						};
+					})(id,col/boxSize);
 				}
 			}
 
