@@ -145,7 +145,7 @@ function updatedHeuristic(grid){
 }
 
 // returns best move with heuristic
-function alphabeta(grid, depth, alpha, beta, player){
+function alphabeta(grid, depth, alpha, beta, player, heuristic){
   var width = grid[0].length;
   var maxWin = winningState(1,grid);
   var minWin = winningState(2, grid);
@@ -156,7 +156,7 @@ function alphabeta(grid, depth, alpha, beta, player){
     else if (minWin)
       return -1000 - depth;
     else
-      return updatedHeuristic(grid);
+      return heuristic(grid);
   }
   var bestColumn = 0;
   for (var col = 0; col  < width; col++){
@@ -179,7 +179,7 @@ function alphabeta(grid, depth, alpha, beta, player){
         var copiedGrid = copyGrid(grid);
         // Update the coordinates to have the player
         copiedGrid[row][col] = player;
-        var currentValue = alphabeta(copiedGrid, depth - 1, alpha, beta, 2);
+        var currentValue = alphabeta(copiedGrid, depth - 1, alpha, beta, 2, heuristic);
         if (currentValue > bestValue) {
           bestValue = currentValue;
           bestColumn = col;
@@ -206,7 +206,7 @@ function alphabeta(grid, depth, alpha, beta, player){
         var copiedGrid = copyGrid(grid);
         // Update the coordinates to have the player
         copiedGrid[row][col] = player;
-        var currentValue = alphabeta(copiedGrid, depth - 1, alpha, beta, 1);
+        var currentValue = alphabeta(copiedGrid, depth - 1, alpha, beta, 1, heuristic);
         if (currentValue < bestValue) {
           bestValue = currentValue;
           bestColumn = col;
@@ -228,5 +228,10 @@ var alphabetaDepth = 7;
 
 // Player 1 is max, player 2 is min
 bots["AlphaBeta_Bot"] = function(grid){
-  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn);
+  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, heuristic);
+}
+
+// Player 1 is max, player 2 is min
+bots["AlphaBeta_Bot_v2"] = function(grid){
+  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
 }

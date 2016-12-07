@@ -8,6 +8,10 @@
 	<body>
 		<h1 class="center"> Connect Four </h1>
 		<h2 class="center" id="player_turn"> Player 1's Move </h2>
+		<div class="center" id="game_end" style="display: none;">
+			<p style="font-size: 30px"></p>
+			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
+		</div>
 		<div class="center" style="width:1200px; clear:both; margin: auto;">
 			<div style="width: 250px; float: left;">
 				<h3> Player 1 <h3>
@@ -38,10 +42,6 @@
 	        </div>
 				</form>
 			</div>
-		</div>
-		<div class="center" id="game_end" style="display: none;">
-			<p style="font-size: 30px"></p>
-			<input type="button" value="Play Again!" onclick="resetGrid()"></input>
 		</div>
 		<script>
 			var boxSize = 100;

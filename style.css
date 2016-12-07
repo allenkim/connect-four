@@ -57,3 +57,7 @@ td, th {
   width:700px;
   height:700px;
 }
+
+#game_end {
+  padding-bottom: 50px;
+}
