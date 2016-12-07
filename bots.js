@@ -136,15 +136,16 @@ function updatedHeuristic(grid){
     return -1000;
 
   // Number of three in a rows for player 1 - player 2
-  var threeHeuristic = numThreeInRow(1,grid) - numThreeInRow(2,grid);
+  // var threeHeuristic = numThreeInRow(1,grid) - numThreeInRow(2,grid);
   // Number of ways player 1 can win - number of ways player 2 can win
   var fourHeuristic = numWinningStates(1,grid) - numWinningStates(2,grid);
-
-  return threeHeuristic + fourHeuristic + (Math.random()-0.5)*0.001;
+  // Number of totalThreats
+  var threatHeuristic = numberThreats(1,grid) - numberThreats(2,grid);
+  return threatHeuristic * 12 + fourHeuristic + (Math.random()-0.5)*0.001;
 }
 
 // returns best move with heuristic
-function alphabeta(grid, depth, alpha, beta, player, heuristic){
+function alphabeta(grid, depth, alpha, beta, player){
   var width = grid[0].length;
   var maxWin = winningState(1,grid);
   var minWin = winningState(2, grid);

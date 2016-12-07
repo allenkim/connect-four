@@ -22,7 +22,9 @@ var makingMove = false;
 // Boolean whether bot is computing a move right now
 var botThinking = false;
 // Minimum number of milliseconds bots have to take before making a move
-var botDelay = 100;
+var botDelay = 300;
+// Tween Delay for dropping
+var tweenDelay = 0.08;
 // players[1] is the first player and players[2] is the second player
 var players = [,"Human", "Human"]
 
@@ -72,8 +74,12 @@ function makeMove(col,isBot){
     var drop = document.getElementById('drop-'+col);
     drop.setAttribute("fill-opacity",1);
     drop.setAttribute("fill",playerTurn===1?"yellow":"red");
+    if (players[playerTurn] === "Human")
+      tweenDelay = 0.08;
+    else
+      tweenDelay = 0.02;
     if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
-      TweenLite.to(drop, 0.08*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
+      TweenLite.to(drop, tweenDelay*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         var game_end = document.getElementById('game_end');
         if (moveNumber > width*height){
           game_end.childNodes[1].innerHTML = "Draw!";
@@ -93,7 +99,7 @@ function makeMove(col,isBot){
     }
     else{
 
-      TweenLite.to(drop, 0.08*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
+      TweenLite.to(drop, tweenDelay*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         playerTurn = 3 - playerTurn; // toggles between player 1 and 2
         document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
         makeBotMove();

@@ -121,7 +121,10 @@
 			    (function(i,id, bot){
 			      document.getElementById(id).onclick = function() {
 			        players[i] = bot;
-			        makeBotMove();
+							if (players[i] !== "Human"){
+								tweenDelay = 0;
+								makeBotMove();
+							}
 			      };
 			    })(i,id, bot);
 			  }
