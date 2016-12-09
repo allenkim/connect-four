@@ -141,7 +141,7 @@ function updatedHeuristic(grid){
   var fourHeuristic = numWinningStates(1,grid) - numWinningStates(2,grid);
   // Number of totalThreats
   var threatHeuristic = numberThreats(1,grid) - numberThreats(2,grid);
-  return threatHeuristic * 12 + fourHeuristic + (Math.random()-0.5)*0.001;
+  return threatHeuristic * 12.5 + fourHeuristic + (Math.random()-0.5)*0.001;
 }
 
 // returns best move with heuristic
