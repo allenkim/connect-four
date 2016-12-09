@@ -8,8 +8,8 @@ bots["Pure_Random_Bot"] = function(grid){
   var width = grid[0].length;
   while (!isGridFull(grid)){
     var col = Math.floor(Math.random() * width);
-    if (moveRow(col,grid))
-    return col;
+    if (moveRow(col,grid) !== -1)
+      return col;
   }
 }
 
@@ -32,7 +32,7 @@ bots["Basic_Bot"] = function(grid){
   while (!isGridFull(grid)){
     var col = Math.floor(Math.random() * 7);
     if (moveRow(col,grid) !== -1)
-    return col;
+      return col;
   }
 }
 
