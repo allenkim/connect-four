@@ -36,6 +36,53 @@ bots["Basic_Bot"] = function(grid){
   }
 }
 
+// Decent bot is like Basic bot but also checks to avoid threats
+// Otherwise, it plays randomly
+bots["Decent_Bot"] = function(grid){
+  var width = grid[0].length;
+  for (var col = 0; col < width; col++){
+    var row = moveRow(col,grid);
+    if (row !== -1 && playerWon(row,col,playerTurn,grid)){
+      return col;
+    }
+  }
+  for (var col = 0; col < width; col++){
+    var row = moveRow(col,grid);
+    if (row !== -1 && playerWon(row,col,3-playerTurn,grid)){
+      return col;
+    }
+  }
+  var goodCols = [];
+  var okayCols = [];
+  var badCols = [];
+  for (var col = 0; col < width; col++){
+    var row = moveRow(col,grid);
+    if (row === 0){
+      goodCols.push(col);
+    }
+    else if (row > 0){
+      if (playerWon(row-1,col,3-playerTurn,grid))
+        badCols.push(col);
+      else if (playerWon(row-1,col,playerTurn,grid))
+        okayCols.push(col);
+      else
+        goodCols.push(col);
+    }
+  }
+  var avail = goodCols;
+  if (goodCols.length === 0){
+    avail = okayCols;
+    if (okayCols.length === 0){
+      avail = badCols;
+    }
+  }
+  
+  while (!isGridFull(grid)){
+    var col = avail[Math.floor(Math.random() * avail.length)];
+    if (moveRow(col,grid) !== -1)
+      return col;
+  }
+}
 
 function heuristic(grid){
   if (winningState(1,grid))
