@@ -76,7 +76,7 @@ bots["Decent_Bot"] = function(grid){
       avail = badCols;
     }
   }
-  
+
   while (!isGridFull(grid)){
     var col = avail[Math.floor(Math.random() * avail.length)];
     if (moveRow(col,grid) !== -1)
@@ -281,4 +281,8 @@ bots["AlphaBeta_Bot"] = function(grid){
 // Player 1 is max, player 2 is min
 bots["AlphaBeta_Bot_v2"] = function(grid){
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
+}
+
+bots["MCTS_Bot"] = function(grid){
+  return mcts(playerTurn, grid);
 }
