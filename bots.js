@@ -76,7 +76,7 @@ bots["Decent_Bot"] = function(grid){
       avail = badCols;
     }
   }
-  
+
   while (!isGridFull(grid)){
     var col = avail[Math.floor(Math.random() * avail.length)];
     if (moveRow(col,grid) !== -1)
@@ -271,7 +271,7 @@ function alphabeta(grid, depth, alpha, beta, player, heuristic){
 }
 
 // Deepest check for our state space graph
-var alphabetaDepth = 7;
+var alphabetaDepth = 8;
 
 // Player 1 is max, player 2 is min
 bots["AlphaBeta_Bot"] = function(grid){

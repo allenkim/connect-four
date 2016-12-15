@@ -40,15 +40,17 @@ document.getElementById("human_2").onclick = function() {
  * makeBotMove makes a move for the bot
  */
 function makeBotMove(){
-  if (botThinking || (players[playerTurn] === "Human"))
+  if (botThinking || gameOver || (players[playerTurn] === "Human"))
     return false;
   botThinking = true;
   var thinking = setTimeout(function(){
     botThinking = false;
     makeBotMove();
   },botDelay)
-  var col = bots[players[playerTurn]](grid);
-  makeMove(col,true);
+  if (!makingMove){
+    var col = bots[players[playerTurn]](grid);
+    makeMove(col,true);
+  }
 }
 
 /*
@@ -77,7 +79,7 @@ function makeMove(col,isBot){
     if (players[playerTurn] === "Human")
       tweenDelay = 0.08;
     else
-      tweenDelay = 0.02;
+      tweenDelay = 0.05;
     if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
       TweenLite.to(drop, tweenDelay*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         var game_end = document.getElementById('game_end');
@@ -102,6 +104,7 @@ function makeMove(col,isBot){
       TweenLite.to(drop, tweenDelay*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         playerTurn = 3 - playerTurn; // toggles between player 1 and 2
         document.getElementById('player_turn').innerHTML = "Player " + playerTurn + "'s Move";
+        botThinking = false;
         makeBotMove();
         drawGrid();
         drop.setAttribute('style','');
