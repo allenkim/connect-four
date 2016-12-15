@@ -40,14 +40,14 @@ document.getElementById("human_2").onclick = function() {
  * makeBotMove makes a move for the bot
  */
 function makeBotMove(){
-  if (botThinking || (players[playerTurn] === "Human"))
+  if (botThinking || (players[playerTurn] === "Human") || gameOver)
     return false;
   botThinking = true;
   var thinking = setTimeout(function(){
     botThinking = false;
     makeBotMove();
   },botDelay)
-  var col = bots[players[playerTurn]](grid);
+  var col = bots[players[playerTurn]](playerTurn,grid);
   makeMove(col,true);
 }
 

@@ -1,8 +1,9 @@
 class GameNode {
-  constructor(player, grid) {
+  constructor(player, col, grid) {
     this.grid = grid;
+    this.col = col;
     this.player = player;
-    this.visits = 1;
+    this.visits = 0;
     this.wins = 0;
     this.children = [];
     this.parent = null;
@@ -10,32 +11,11 @@ class GameNode {
 }
 
 class GameTree {
-  constructor() {
-    var height = 6;
-    var width = 7;
-    var grid = []; // grid representing the Connect Four board
-    for (var row = 0; row < height; row++){
-      grid.push([]);
-      for (var col = 0; col < width; col++)
-        // 0 means empty, 1 means first player (yellow), 2 means second player (red)
-        grid[row][col] = 0;
-    }
-    this.root = new GameNode(1, grid); // 1 means that the empty grid is the player 1's turn
+  constructor(player,grid) {
+    this.root = new GameNode(player, null, grid);
   }
   get getRoot() {
     return this.root;
-  }
-  get bestMove() {
-    var col = this.roots[0].col;
-    var visits = this.roots[0].visits;
-    for (var i = 1; i < this.roots.length; i++){
-      var root = this.roots[i];
-      if (root.visits > visits){
-        visits = root.visits;
-        col = root.col;
-      }
-    }
-    return col;
   }
 
 }
@@ -53,8 +33,8 @@ function figureOutMove(grid, newGrid){
 }
 
 function mcts(player,grid){
-  var tree = new GameTree();
-  var numSimulations = 5000;
+  var tree = new GameTree(player,grid);
+  var numSimulations = 10000;
   for (var n = 0; n < numSimulations; n++){
     var newNode = treePolicy(tree.getRoot);
     var simulatonResult = defaultPolicy(player,newNode.grid);
@@ -78,7 +58,6 @@ function isFullyExpanded(node){
 }
 
 function treePolicy(node){
-  var CONSTANT = 1;
   var curr = node;
   var currGrid = node.grid;
   while (!terminalState(currGrid)){
@@ -86,7 +65,8 @@ function treePolicy(node){
       return expand(curr);
     }
     else{
-      curr = bestChild(curr, CONSTANT);
+      curr = bestChild(curr, 1);
+      currGrid = curr.grid;
     }
   }
   return curr;
@@ -96,17 +76,22 @@ function expand(node){
   var grid = node.grid;
   var player = node.player;
   var width = grid[0].length;
+  var colList = node.children.map(function(node){
+    return node.col;
+  });
   for (var col = 0; col < width; col++){
+    if (colList.indexOf(col) > -1)
+      continue;
     var row = moveRow(col,grid);
     if (row !== -1){
       var newGrid = copyGrid(grid);
       newGrid[row][col] = player;
-      var newNode = new GameNode(3 - player, newGrid);
+      var newNode = new GameNode(3 - player, col, newGrid);
       newNode.parent = node;
       node.children.push(newNode);
+      return newNode;
     }
   }
-  return newNode;
 }
 
 function UCT(node,c){
@@ -116,9 +101,15 @@ function UCT(node,c){
 function bestChild(node, c){
   var best = node.children[0];
   var bestVal = UCT(best,c);
+  if (c === 0){
+    console.log(c, best.col, best.wins, best.visits);
+  }
   for (var i = 1; i < node.children.length; i++){
     var child = node.children[i];
     var childVal = UCT(child,c);
+    if (c === 0){
+      console.log(c, child.col, child.wins, child.visits);
+    }
     if (childVal > bestVal){
       bestVal = childVal;
       best = child;
@@ -134,10 +125,10 @@ function defaultPolicy(player,grid){
   var makingMove = false;
   var newGrid = copyGrid(grid);
   while (!isGridFull(newGrid)){
-    var col = bots["Pure_Random_Bot"](newGrid);
+    var col = bots["Basic_Bot"](playerTurn, newGrid);
     var row = moveRow(col,newGrid);
     if (playerWon(row,col,playerTurn,newGrid))
-      return (player === playerTurn);
+      return (player === playerTurn) ? 1 : 0;
     newGrid[row][col] = playerTurn;
     playerTurn = 3 - playerTurn;
   }
@@ -146,10 +137,9 @@ function defaultPolicy(player,grid){
 
 function backupNegamax(node, value){
   var curr = node;
-  while (curr.parent !== null){
-    curr.visit++;
+  while (curr !== null){
+    curr.visits++;
     curr.wins += value;
-    value = -value;
     curr = curr.parent;
   }
 }

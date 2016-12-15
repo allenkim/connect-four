@@ -4,7 +4,7 @@
 var bots = {}
 
 // Basic bot that will randomly choose an available column
-bots["Pure_Random_Bot"] = function(grid){
+bots["Pure_Random_Bot"] = function(playerTurn, grid){
   var width = grid[0].length;
   while (!isGridFull(grid)){
     var col = Math.floor(Math.random() * width);
@@ -15,7 +15,7 @@ bots["Pure_Random_Bot"] = function(grid){
 
 // Basic bot that will win when possible or block if enemy is going to win
 // Otherwise, it plays randomly
-bots["Basic_Bot"] = function(grid){
+bots["Basic_Bot"] = function(playerTurn, grid){
   var width = grid[0].length;
   for (var col = 0; col < width; col++){
     var row = moveRow(col,grid);
@@ -38,7 +38,7 @@ bots["Basic_Bot"] = function(grid){
 
 // Decent bot is like Basic bot but also checks to avoid threats
 // Otherwise, it plays randomly
-bots["Decent_Bot"] = function(grid){
+bots["Decent_Bot"] = function(playerTurn, grid){
   var width = grid[0].length;
   for (var col = 0; col < width; col++){
     var row = moveRow(col,grid);
@@ -171,7 +171,7 @@ function minimax(grid, depth, player){
 var minimaxDepth = 5;
 
 // Player 1 is max, player 2 is min
-bots["Minimax_Bot"] = function(grid){
+bots["Minimax_Bot"] = function(playerTurn, grid){
   return minimax(copyGrid(grid), minimaxDepth, playerTurn);
 }
 
@@ -274,15 +274,15 @@ function alphabeta(grid, depth, alpha, beta, player, heuristic){
 var alphabetaDepth = 7;
 
 // Player 1 is max, player 2 is min
-bots["AlphaBeta_Bot"] = function(grid){
+bots["AlphaBeta_Bot"] = function(playerTurn, grid){
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, heuristic);
 }
 
 // Player 1 is max, player 2 is min
-bots["AlphaBeta_Bot_v2"] = function(grid){
+bots["AlphaBeta_Bot_v2"] = function(playerTurn, grid){
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
 }
 
-bots["MCTS_Bot"] = function(grid){
+bots["MCTS_Bot"] = function(playerTurn, grid){
   return mcts(playerTurn, grid);
 }
