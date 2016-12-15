@@ -271,7 +271,7 @@ function alphabeta(grid, depth, alpha, beta, player, heuristic){
 }
 
 // Deepest check for our state space graph
-var alphabetaDepth = 8;
+var alphabetaDepth = 7;
 
 // Player 1 is max, player 2 is min
 bots["AlphaBeta_Bot"] = function(grid){
