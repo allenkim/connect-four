@@ -35,10 +35,10 @@ function figureOutMove(grid, newGrid){
 function mcts(player,grid){
   var tree = new GameTree(player,grid);
   var numSimulations = 200;
-  var simulationPerNode = 50;
+  var simulationPerNode = 80;
   for (var n = 0; n < numSimulations; n++){
+    var newNode = treePolicy(tree.getRoot);
     for (var m = 0; m < simulationPerNode; m++){
-      var newNode = treePolicy(tree.getRoot);
       var simulatonResult = defaultPolicy(newNode.player,newNode.grid);
       backupNegamax(newNode,simulatonResult);
     }
