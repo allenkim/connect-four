@@ -37,13 +37,13 @@ function mcts(player,grid){
   var numSimulations = 200;
   var simulationPerNode = 80;
   for (var n = 0; n < numSimulations; n++){
-    var newNode = treePolicy(tree.getRoot);
+    var newNode = treePolicy(player, tree.getRoot);
     for (var m = 0; m < simulationPerNode; m++){
       var simulatonResult = defaultPolicy(newNode.player,newNode.grid);
       backupNegamax(newNode,simulatonResult);
     }
   }
-  var child = bestChild(tree.getRoot,0);
+  var child = bestChild(player, tree.getRoot,0);
   return figureOutMove(grid, child.grid);
 }
 
@@ -60,7 +60,7 @@ function isFullyExpanded(node){
   return (totalChildren === node.children.length);
 }
 
-function treePolicy(node){
+function treePolicy(player, node){
   var curr = node;
   var currGrid = node.grid;
   while (!terminalState(currGrid)){
@@ -68,7 +68,7 @@ function treePolicy(node){
       return expand(curr);
     }
     else{
-      curr = bestChild(curr, 1);
+      curr = bestChild(player, curr, 1);
       currGrid = curr.grid;
     }
   }
@@ -102,21 +102,36 @@ function UCT(node,c){
   return uctVal;
 }
 
-function bestChild(node, c){
+function bestChild(player, node, c){
   var best = node.children[0];
   var bestVal = UCT(best,c);
   if (c === 0){
-    //console.log(best.col, best.value, best.visits, bestVal);
+    //console.log(player, best.col, best.value, best.visits, bestVal);
   }
-  for (var i = 1; i < node.children.length; i++){
-    var child = node.children[i];
-    var childVal = UCT(child,c);
-    if (c === 0){
-      //console.log(child.col, child.value, child.visits, childVal);
+  if (player === 1){
+    for (var i = 1; i < node.children.length; i++){
+      var child = node.children[i];
+      var childVal = UCT(child,c);
+      if (c === 0){
+        //console.log(player, child.col, child.value, child.visits, childVal);
+      }
+      if (childVal > bestVal){
+        bestVal = childVal;
+        best = child;
+      }
     }
-    if (childVal > bestVal){
-      bestVal = childVal;
-      best = child;
+  }
+  else if (player === 2){
+    for (var i = 1; i < node.children.length; i++){
+      var child = node.children[i];
+      var childVal = UCT(child,c);
+      if (c === 0){
+        //console.log(player, child.col, child.value, child.visits, childVal);
+      }
+      if (childVal < bestVal){
+        bestVal = childVal;
+        best = child;
+      }
     }
   }
   return best;
