@@ -278,11 +278,10 @@ bots["AlphaBeta_Bot"] = function(playerTurn, grid){
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, heuristic);
 }
 
-// Player 1 is max, player 2 is min
-bots["AlphaBeta_Bot_v2"] = function(playerTurn, grid){
-  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
-}
-
 bots["MCTS_Bot"] = function(playerTurn, grid){
   return mcts(playerTurn, grid);
+}
+
+bots["AlphaBeta_Bot_v2"] = function(playerTurn, grid){
+  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
 }
