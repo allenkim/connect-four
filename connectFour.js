@@ -48,7 +48,7 @@ function makeBotMove(){
     makeBotMove();
   },botDelay)
   if (!makingMove){
-    var col = bots[players[playerTurn]](grid);
+    var col = bots[players[playerTurn]](playerTurn,grid);
     makeMove(col,true);
   }
 }

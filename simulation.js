@@ -47,7 +47,7 @@ function simulateGame(){
   var playerTurn = 1;
   var makingMove = false;
   while (moveNumber <= width*height){
-    var col = bots[players[playerTurn]](grid);
+    var col = bots[players[playerTurn]](playerTurn,grid);
     var row = moveRow(col,grid);
     if (playerWon(row,col,playerTurn,grid))
       return playerTurn;

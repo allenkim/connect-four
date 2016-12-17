@@ -522,3 +522,7 @@ function numberThreats(player,grid){
   }
   return totalThreats;
 }
+
+function terminalState(grid){
+  return winningState(1,grid) || winningState(2, grid) || isGridFull(grid);
+}
