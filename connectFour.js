@@ -80,10 +80,11 @@ function makeMove(col,isBot){
       tweenDelay = 0.08;
     else
       tweenDelay = 0.05;
-    if (moveNumber === width*height || playerWon(row,col,playerTurn,grid)){
+    var wonGame = playerWon(row,col,playerTurn,grid);
+    if (wonGame || moveNumber >== width*height){
       TweenLite.to(drop, tweenDelay*(row+1), {x:0, y:(row+1)*100, ease: Linear.easeNone, onComplete: function(){
         var game_end = document.getElementById('game_end');
-        if (moveNumber >= width*height){
+        if (!wonGame){
           game_end.childNodes[1].innerHTML = "Draw!";
         }
         else{
