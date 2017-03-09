@@ -1,9 +1,12 @@
-# Credit to https://gist.github.com/poke/6934842
+# Credit to https://gist.github.com/poke/6934842 for the clean win checks
 from itertools import groupby, chain
+from random import randint
 
-NONE = '.'
-RED = 'R'
-YELLOW = 'Y'
+NONE = 0
+RED = 1
+YELLOW = 2
+
+CHAR_MAP = ['.', 'R', 'Y']
 
 def diagonalsPos (matrix, cols, rows):
 	"""Get positive diagonals, going from bottom-left to top-right."""
@@ -15,7 +18,7 @@ def diagonalsNeg (matrix, cols, rows):
 	for di in ([(j, i - cols + j + 1) for j in range(cols)] for i in range(cols + rows - 1)):
 		yield [matrix[i][j] for i, j in di if i >= 0 and j >= 0 and i < cols and j < rows]
 
-class Game:
+class ConnectFourGame:
 	def __init__ (self, cols = 7, rows = 6, requiredToWin = 4):
 		"""Create a new game."""
 		self.cols = cols
@@ -23,27 +26,24 @@ class Game:
 		self.win = requiredToWin
 		self.board = [[NONE] * rows for _ in range(cols)]
 
+	def randomMove(self, color):
+		"""Insert a random (legal) move"""
+		legal_c = [c_idx for c_idx, c in enumerate(board) if c[0] == NONE]
+		rand_idx = randint(0, len(legal_c) - 1)
+		self.insert(legal_c[rand_idx], color)
+
 	def insert (self, column, color):
 		"""Insert the color in the given column."""
 		c = self.board[column]
 		if c[0] != NONE:
-			raise Exception('Column is full')
+			self.randomMove(color)
 
 		i = -1
 		while c[i] != NONE:
 			i -= 1
 		c[i] = color
 
-		self.checkForWin()
-
-	def checkForWin (self):
-		"""Check the current board for a winner."""
-		w = self.getWinner()
-		if w:
-			self.printBoard()
-			raise Exception(w + ' won!')
-
-	def getWinner (self):
+	def checkWinner (self):
 		"""Get the winner on the current board."""
 		lines = (
 			self.board, # columns
@@ -57,18 +57,24 @@ class Game:
 				if color != NONE and len(list(group)) >= self.win:
 					return color
 
+		return None
+
 	def printBoard (self):
 		"""Print the board."""
 		print('  '.join(map(str, range(self.cols))))
 		for y in range(self.rows):
-			print('  '.join(str(self.board[x][y]) for x in range(self.cols)))
+			print('  '.join(str(CHAR_MAP[self.board[x][y]]) for x in range(self.cols)))
 		print()
 
 if __name__ == '__main__':
-	g = Game()
+	g = ConnectFourGame()
 	turn = RED
 	while True:
 		g.printBoard()
 		row = input('{}\'s turn: '.format('Red' if turn == RED else 'Yellow'))
 		g.insert(int(row), turn)
+		if g.checkWinner() == turn:
+			g.printBoard()
+			print(CHAR_MAP[turn] + " wins!")
+			break
 		turn = YELLOW if turn == RED else RED
