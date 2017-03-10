@@ -1,5 +1,5 @@
 import math
-from random import random
+from random import random, randint
 from copy import deepcopy
 
 from constants import NONE, RED, YELLOW, DRAW
@@ -18,6 +18,13 @@ def alphabetaBot(node, depth, alpha, beta, player, botLevel):
     """
     winner = node.checkWinner()
     if depth == 0 or winner != NONE:
+        # Case when botLevel is 0 - imitates a randomly playing bot
+        if botLevel == 0:
+            legal_c = node.legalColumns()
+            if len(legal_c) > 0:
+                rand_idx = randint(0, len(legal_c) - 1)
+                return legal_c[rand_idx]
+
         # Simple Heuristic evaluation
         if winner == RED:
             return 100 + depth
@@ -53,7 +60,7 @@ def alphabetaBot(node, depth, alpha, beta, player, botLevel):
                 if new_v < best_v:
                     best_v = new_v
                     best_col = col
-                alpha = min(alpha, best_v)
+                beta = min(beta, best_v)
                 if beta <= alpha:
                     break
         if depth == botLevel:

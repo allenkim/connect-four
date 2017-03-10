@@ -95,9 +95,9 @@ if __name__ == '__main__':
             continue
 
     while True:
-        botLevel = input('Bot Level (0 to 9): ')
+        botLevel = input('Bot Level (0 to 5): ')
         try:
-            if 0 <= int(botLevel) <= 9:
+            if 0 <= int(botLevel) <= 5:
                 botLevel = int(botLevel)
                 print()
                 break
