@@ -1,8 +1,11 @@
+from random import random
+
 from connect_four import ConnectFourGame
 
 class ConnectFourGym:
     def __init__(self):
-        self.turn = 1 # 1 = RED, 2 = YELLOW
+        # 1 = RED, 2 = YELLOW, bot in training will always be 1
+        self.turn = 1
         self.game = ConnectFourGame()
 
     def reset(self):
