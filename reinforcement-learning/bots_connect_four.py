@@ -1,10 +1,40 @@
 import math
+import numpy as np
+import pickle as pickle
 from random import random, randint
 from copy import deepcopy
 
 from constants import NONE, RED, YELLOW, DRAW
 
-def botMove(node, turn, strength):
+def softmax(x):
+    """Compute softmax values for each sets of scores in x."""
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum()
+
+def prepro(I):
+    """ prepro 6x7 array into 126 (6*7*3) 1D float vector """
+    def expand(elt):
+        if elt == 0:
+            return [1, 0, 0]
+        elif elt == 1:
+            return [0, 1, 0]
+        elif elt == 2:
+            return [0, 0, 1]
+    flat_grid = [expand(elt) for elt in np.array(I).ravel()]
+    return np.array(flat_grid).astype(np.float).ravel()
+
+
+def pgMove(node):
+    model = pickle.load(open('save.p', 'rb'))
+    x = prepro(node.board)
+    h = np.dot(model['W1'], x)
+    h[h<0] = 0 # ReLU nonlinearity
+    logp = np.dot(model['W2'], h)
+    aprob = softmax(logp)
+    action = np.random.choice(7,1,p=aprob)[0]
+    return action
+
+def alphabetaMove(node, turn, strength):
     return alphabetaBot(node, strength, -math.inf, math.inf, turn, strength)
 
 # RED is max, YELLOW is min

@@ -3,7 +3,7 @@ from itertools import groupby, chain
 from random import randint
 
 from constants import NONE, RED, YELLOW, DRAW, CHAR_MAP
-from bots_connect_four import botMove
+from bots_connect_four import alphabetaMove, pgMove
 
 def diagonalsPos (matrix, cols, rows):
     """Get positive diagonals, going from bottom-left to top-right."""
@@ -81,23 +81,22 @@ class ConnectFourGame:
 
 if __name__ == '__main__':
     g = ConnectFourGame()
-    turn = RED
-    playerTurn = None
+    turn = None
     botLevel = None
     while True:
-        playerTurn = input('First or second player? (1 or 2): ')
+        t_in = input('First or second player? (1 or 2): ')
         try:
-            if 1 <= int(playerTurn) <= 2:
-                playerTurn = RED if 1 else YELLOW
+            if 1 <= int(t_in) <= 2:
+                turn = YELLOW if t_in == '1' else RED
                 print()
                 break
         except Exception as e:
             continue
 
     while True:
-        botLevel = input('Bot Level (0 to 5): ')
+        botLevel = input('Bot Level (-1 to 5): ')
         try:
-            if 0 <= int(botLevel) <= 5:
+            if -1 <= int(botLevel) <= 5:
                 botLevel = int(botLevel)
                 print()
                 break
@@ -106,7 +105,7 @@ if __name__ == '__main__':
 
     while True:
         g.printBoard()
-        if turn == playerTurn:
+        if turn == YELLOW:
             while True:
                 col = input('{}\'s turn: '.format('Red' if turn == RED else 'Yellow'))
                 try:
@@ -118,7 +117,7 @@ if __name__ == '__main__':
 
             g.insert(col, turn)
         else:
-            col = botMove(g, turn, botLevel)
+            col = pgMove(g) if botLevel == -1 else alphabetaMove(g, turn, botLevel)
             g.insert(col, turn)
 
         winner = g.checkWinner()
