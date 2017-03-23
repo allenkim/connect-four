@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import pickle as pickle
-from random import random, randint
+from random import random, randint, gauss
 from copy import deepcopy
 
 from constants import NONE, RED, YELLOW, DRAW
@@ -24,8 +24,11 @@ def prepro(I):
     return np.array(flat_grid).astype(np.float).ravel()
 
 
-def pgMove(node):
-    model = pickle.load(open('save.p', 'rb'))
+def pgMove(node, num = None):
+    if num:
+        model = pickle.load(open('save_'+str(num)+'.p', 'rb'))
+    else:
+        model = pickle.load(open('save.p', 'rb'))
     x = prepro(node.board)
     h = np.dot(model['W1'], x)
     h[h<0] = 0 # ReLU nonlinearity
@@ -36,6 +39,26 @@ def pgMove(node):
 
 def alphabetaMove(node, turn, strength):
     return alphabetaBot(node, strength, -math.inf, math.inf, turn, strength)
+
+def heuristic(node):
+    num_r_y = []
+    for col in node.board:
+        num_red = 0
+        num_yellow = 0
+        for elt in col:
+            if elt == RED:
+                num_red += 1
+            elif elt == YELLOW:
+                num_yellow += 1
+        num_r_y.append(num_red - num_yellow)
+    num_r_y[3] *= gauss(3,1)
+    num_r_y[2] *= gauss(2,1)
+    num_r_y[4] *= gauss(2,1)
+    num_r_y[1] *= gauss(1,1)
+    num_r_y[5] *= gauss(1,1)
+    num_r_y[0] *= gauss(0,1)
+    num_r_y[6] *= gauss(0,1)
+    return sum(num_r_y)
 
 # RED is max, YELLOW is min
 def alphabetaBot(node, depth, alpha, beta, player, botLevel):
@@ -57,11 +80,11 @@ def alphabetaBot(node, depth, alpha, beta, player, botLevel):
 
         # Simple Heuristic evaluation
         if winner == RED:
-            return 100 + depth
+            return 10000 + depth
         elif winner == YELLOW:
-            return -100 - depth
+            return -10000 - depth
         else:
-            return random()
+            return heuristic(node)
     if player == RED:
         best_v = -math.inf
         best_col = 3

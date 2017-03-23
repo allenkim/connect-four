@@ -2,13 +2,21 @@ from random import random, randint
 
 from constants import NONE, RED, YELLOW, DRAW
 from connect_four import ConnectFourGame
-from bots_connect_four import alphabetaMove
+from bots_connect_four import alphabetaMove, pgMove
+
+def invert_colors(board):
+    for col in range(len(board)):
+        for row in range(len(board[col])):
+            if board[col][row] == RED:
+                board[col][row] = YELLOW
+            elif board[col][row] == YELLOW:
+                board[col][row] = RED
 
 class ConnectFourGym:
     def reset(self):
         # AI is always RED and yellow or red goes first randomly
         self.firstPlayer = RED if random() < 0.5 else YELLOW
-        self.opp_level = 2 # the AI that will face the bot
+        self.opp_level = randint(0,1) # the AI that will face the bot
         self.game = ConnectFourGame()
         if self.firstPlayer == YELLOW:
             move = alphabetaMove(self.game, YELLOW, self.opp_level)
@@ -43,10 +51,14 @@ class ConnectFourGym:
                 reward = -1.0
             done = True
         else:
-            move = alphabetaMove(self.game, YELLOW, self.opp_level)
+            move = 2
+            if self.opp_level == 0:
+                move = alphabetaMove(self.game, YELLOW, 2)
+            elif self.opp_level == 1:
+                move = alphabetaMove(self.game, YELLOW, 3)
             self.game.insert(move, YELLOW)
             winner = self.game.checkWinner()
-            if winner != NONE:
+            if winner != NONE: 
                 reward = -1.0
                 done = True
         
