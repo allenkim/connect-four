@@ -1,2 +1,2 @@
 # Connect Four
-AI Project for the Connect Four board game 
+https://allenkim.github.io/connect-four/
