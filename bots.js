@@ -3,6 +3,9 @@
 // Object of all different bots made
 var bots = {}
 
+// Deepest check for our state space graph
+var alphabetaDepth = 8;
+
 // Basic bot that will randomly choose an available column
 bots["Pure_Random_Bot"] = function(playerTurn, grid){
   var width = grid[0].length;
@@ -171,8 +174,19 @@ function minimax(grid, depth, player){
 var minimaxDepth = 5;
 
 // Player 1 is max, player 2 is min
-bots["Minimax_Bot"] = function(playerTurn, grid){
-  return minimax(copyGrid(grid), minimaxDepth, playerTurn);
+bots["Challenger_Bot"] = function(playerTurn, grid){
+  alphabetaDepth = 5;
+  return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, heuristic);
+}
+
+function simpleHeuristic(grid){
+  if (winningState(1,grid))
+    return 1000;
+
+  if (winningState(2,grid))
+    return -1000;
+
+  return (Math.random() - 0.5) * 0.1
 }
 
 function updatedHeuristic(grid){
@@ -188,7 +202,8 @@ function updatedHeuristic(grid){
   var fourHeuristic = numWinningStates(1,grid) - numWinningStates(2,grid);
   // Number of totalThreats
   var threatHeuristic = numberThreats(1,grid) - numberThreats(2,grid);
-  return threatHeuristic * 12.5 + fourHeuristic + (Math.random()-0.5)*0.001;
+
+  return threatHeuristic * 12.5 + fourHeuristic + (Math.random()-0.5)*0.01;
 }
 
 // returns best move with heuristic
@@ -270,11 +285,9 @@ function alphabeta(grid, depth, alpha, beta, player, heuristic){
   }
 }
 
-// Deepest check for our state space graph
-var alphabetaDepth = 8;
-
 // Player 1 is max, player 2 is min
 bots["AlphaBeta_Bot"] = function(playerTurn, grid){
+  alphabetaDepth = 8;
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, heuristic);
 }
 
@@ -283,5 +296,6 @@ bots["MCTS_Bot"] = function(playerTurn, grid){
 }
 
 bots["AlphaBeta_Bot_v2"] = function(playerTurn, grid){
+  alphabetaDepth = 8;
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
 }

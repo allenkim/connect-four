@@ -35,12 +35,12 @@ function figureOutMove(grid, newGrid){
 function mcts(player,grid){
   var tree = new GameTree(player,grid);
   var numSimulations = 200;
-  var simulationPerNode = 80;
+  var simulationPerNode = 40;
   for (var n = 0; n < numSimulations; n++){
     var newNode = treePolicy(player, tree.getRoot);
     for (var m = 0; m < simulationPerNode; m++){
-      var simulatonResult = defaultPolicy(newNode.player,newNode.grid);
-      backupNegamax(newNode,simulatonResult);
+      var simulationResult = defaultPolicy(newNode.player,newNode.grid);
+      backupNegamax(newNode,simulationResult);
     }
   }
   var child = bestChild(player, tree.getRoot,0);
@@ -68,7 +68,7 @@ function treePolicy(player, node){
       return expand(curr);
     }
     else{
-      curr = bestChild(player, curr, 1);
+      curr = bestChild(player, curr, 5);
       currGrid = curr.grid;
     }
   }
@@ -108,31 +108,19 @@ function bestChild(player, node, c){
   if (c === 0){
     //console.log(player, best.col, best.value, best.visits, bestVal);
   }
-  if (player === 1){
-    for (var i = 1; i < node.children.length; i++){
-      var child = node.children[i];
-      var childVal = UCT(child,c);
-      if (c === 0){
-        //console.log(player, child.col, child.value, child.visits, childVal);
-      }
-      if (childVal > bestVal){
-        bestVal = childVal;
-        best = child;
-      }
+  for (var i = 1; i < node.children.length; i++){
+    var child = node.children[i];
+    var childVal = UCT(child,c);
+    if (c === 0){
+      //console.log(player, child.col, child.value, child.visits, childVal);
+    }
+    if (childVal > bestVal){
+      bestVal = childVal;
+      best = child;
     }
   }
-  else if (player === 2){
-    for (var i = 1; i < node.children.length; i++){
-      var child = node.children[i];
-      var childVal = UCT(child,c);
-      if (c === 0){
-        //console.log(player, child.col, child.value, child.visits, childVal);
-      }
-      if (childVal < bestVal){
-        bestVal = childVal;
-        best = child;
-      }
-    }
+  if (c === 0){
+      console.log((bestVal + 1) * 50 + "% chance to win");
   }
   return best;
 }
@@ -141,7 +129,6 @@ function defaultPolicy(player,grid){
   var width = grid[0].length;
   var height = grid.length;
   var playerTurn = player;
-  var makingMove = false;
   var newGrid = copyGrid(grid);
   if (winningState(1,grid))
     return 1;
@@ -162,11 +149,12 @@ function defaultPolicy(player,grid){
 function backupNegamax(node, value){
   var curr = node;
   var currVal = value;
-  if (node.player === 2)
+  if (node.player === 1){
     currVal = -value;
+  }
   while (curr !== null){
     curr.visits++;
-    curr.value += value;
+    curr.value += currVal;
     currVal = -currVal;
     curr = curr.parent;
   }

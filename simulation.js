@@ -66,12 +66,18 @@ function runSimulations(){
   var draws = 0;
   for (var i = 1; i <= NUMBER_SIMULATIONS; i++){
     var winningPlayer = simulateGame();
-    if (winningPlayer === 1)
+    if (winningPlayer === 1){
       player1_Wins++;
-    else if (winningPlayer === 2)
+      console.log("Player 1 won!");
+    }
+    else if (winningPlayer === 2){
       player2_Wins++;
-    else
+      console.log("Player 2 won!");
+    }
+    else{
       draws++;
+      console.log("Draw!");
+    }
     console.log(i + " simulations run...");
   }
   var results = [
