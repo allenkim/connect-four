@@ -291,11 +291,11 @@ bots["AlphaBeta_Bot"] = function(playerTurn, grid){
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, heuristic);
 }
 
-bots["MCTS_Bot"] = function(playerTurn, grid){
-  return mcts(playerTurn, grid);
-}
-
 bots["AlphaBeta_Bot_v2"] = function(playerTurn, grid){
   alphabetaDepth = 8;
   return alphabeta(copyGrid(grid), alphabetaDepth, -Infinity, Infinity, playerTurn, updatedHeuristic);
+}
+
+bots["MCTS_Bot"] = function(playerTurn, grid){
+  return mcts(playerTurn, grid);
 }

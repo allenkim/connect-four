@@ -34,8 +34,8 @@ function figureOutMove(grid, newGrid){
 
 function mcts(player,grid){
   var tree = new GameTree(player,grid);
-  var numSimulations = 200;
-  var simulationPerNode = 40;
+  var numSimulations = 400;
+  var simulationPerNode = 20;
   for (var n = 0; n < numSimulations; n++){
     var newNode = treePolicy(player, tree.getRoot);
     for (var m = 0; m < simulationPerNode; m++){
@@ -68,7 +68,7 @@ function treePolicy(player, node){
       return expand(curr);
     }
     else{
-      curr = bestChild(player, curr, 5);
+      curr = bestChild(player, curr, 1);
       currGrid = curr.grid;
     }
   }
