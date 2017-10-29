@@ -19,7 +19,7 @@ batch_size = 100 # every how many episodes to do a param update?
 learning_rate = 1e-4
 gamma = 0.99 # discount factor for reward
 decay_rate = 0.99 # decay factor for RMSProp leaky sum of grad^2
-resume = False # resume from previous checkpoint?
+resume = True # resume from previous checkpoint?
 render = False
 
 # model initialization
@@ -102,7 +102,7 @@ while True:
 
     drs.append(reward) # record reward (has to be done after we call step() to get reward for previous action)
 
-    if reward != 0 and episode_number % 10 == 0: # Game has either +1 or -1 reward exactly when game ends.
+    if reward != 0: # Game has either +1 or -1 reward exactly when game ends.
         print(('ep %d: game finished, reward: %f' % (episode_number, reward)) + 
               ('' if reward == -1 else ' !!!!!!!!') +
               (' - ILLEGAL MOVE' if observation == None else ''))
@@ -121,9 +121,6 @@ while True:
 
         # compute the discounted reward backwards through time
         discounted_epr = discount_rewards(epr)
-        # standardize the rewards to be unit normal (helps control the gradient estimator variance)
-        # discounted_epr -= np.mean(discounted_epr)
-        # discounted_epr /= np.std(discounted_epr)
 
         epdlogp *= discounted_epr # modulate the gradient with advantage (PG magic happens right here.)
         grad = policy_backward(eph, epx, epdlogp)
@@ -139,8 +136,7 @@ while True:
 
         # boring book-keeping
         running_reward = reward_sum if running_reward is None else running_reward * 0.999 + reward_sum * 0.001
-        if episode_number % 10 == 0:
-            print('episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
-        if episode_number % 1000 == 0: pickle.dump(model, open('save.p', 'wb'))
+        print('episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
+        if episode_number % 100 == 0: pickle.dump(model, open('save.p', 'wb'))
         reward_sum = 0
         observation = env.reset() # reset env

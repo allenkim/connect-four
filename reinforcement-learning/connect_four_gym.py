@@ -16,7 +16,7 @@ class ConnectFourGym:
     def reset(self):
         # AI is always RED and yellow or red goes first randomly
         self.firstPlayer = RED if random() < 0.5 else YELLOW
-        self.opp_level = randint(0,1) # the AI that will face the bot
+        self.opp_level = randint(2,4) # the AI that will face the bot
         self.game = ConnectFourGame()
         if self.firstPlayer == YELLOW:
             move = alphabetaMove(self.game, YELLOW, self.opp_level)
@@ -51,11 +51,7 @@ class ConnectFourGym:
                 reward = -1.0
             done = True
         else:
-            move = 2
-            if self.opp_level == 0:
-                move = alphabetaMove(self.game, YELLOW, 2)
-            elif self.opp_level == 1:
-                move = alphabetaMove(self.game, YELLOW, 3)
+            move = alphabetaMove(self.game, YELLOW, self.opp_level)
             self.game.insert(move, YELLOW)
             winner = self.game.checkWinner()
             if winner != NONE: 

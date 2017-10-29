@@ -30,10 +30,12 @@ def pgMove(node, num = None):
     else:
         model = pickle.load(open('save.p', 'rb'))
     x = prepro(node.board)
+    print(x.shape)
     h = np.dot(model['W1'], x)
     h[h<0] = 0 # ReLU nonlinearity
     logp = np.dot(model['W2'], h)
     aprob = softmax(logp)
+    print(aprob)
     action = np.random.choice(7,1,p=aprob)[0]
     return action
 
@@ -51,11 +53,11 @@ def heuristic(node):
             elif elt == YELLOW:
                 num_yellow += 1
         num_r_y.append(num_red - num_yellow)
-    num_r_y[3] *= gauss(3,1)
-    num_r_y[2] *= gauss(2,1)
-    num_r_y[4] *= gauss(2,1)
-    num_r_y[1] *= gauss(1,1)
-    num_r_y[5] *= gauss(1,1)
+    num_r_y[3] *= gauss(0.3,1)
+    num_r_y[2] *= gauss(0.2,1)
+    num_r_y[4] *= gauss(0.2,1)
+    num_r_y[1] *= gauss(0.1,1)
+    num_r_y[5] *= gauss(0.1,1)
     num_r_y[0] *= gauss(0,1)
     num_r_y[6] *= gauss(0,1)
     return sum(num_r_y)
